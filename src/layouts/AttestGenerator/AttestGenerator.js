@@ -21,13 +21,14 @@ class AttestGenerator extends Component {
   handleSubmit(event) {
     console.log(this.state);
     event.preventDefault();
-
+    // TODO: Issuer and image for attestation happens in appmanager.
+    // Need to create a new app for every 
+    // https://github.com/uport-project/appmanager-cli/blob/master/manager.js
     // TODO: Check to make sure all fields have been filled
-    const signer = SimpleSigner('2000049c7b733cd95f8622f65614c06d52402b7962534b76da001c4e1c42af5c');
-    const uport = new Connect(this.state.eventName, {
-        clientId: '2ogMjGdGFH34nByWBi9AmdBze7AU1pETADo',
+    const uport = new Connect('uPort Live', {
+        clientId: '2p2BR9kv8xPPiNFL7bHUZXg4idyUYfaCwfg',
         network: 'rinkeby',
-        signer: signer
+        signer: SimpleSigner('cee5a66435456e057bc58e9cf6a7a83a4d40f826744975a059ec6da8610f16df')
       })
     // FUTURE TODO: Check credentials with event database before offering attestation.
     // OR: Request an attestation from user for login.
