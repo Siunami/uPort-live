@@ -6,8 +6,8 @@ import EventCard from './EventCard'
 class Dashboard extends Component {
   constructor(props, { authData }) {
     super(props)
-    console.log(props)
-    console.log(authData)
+    console.log('props', props)
+    console.log('auth', authData)
 
     authData = this.props
   }
@@ -20,6 +20,7 @@ class Dashboard extends Component {
     // TODO: extract list of created events from authData
     // Something like this should be returned by the credentials requested in loginbutton/LoginButtonActions.js
     const myEvents = [{
+      identifier: 'test-id',
       name: 'Ethereal Summit 2018',
       startDate: '2018-05-11T14:45:18+00:00',
       location: 'Knockdown Center 52-19 Flushing Ave, Maspeth, NY',
@@ -34,7 +35,7 @@ class Dashboard extends Component {
             <button onClick={this.handleEvent}>New Event</button>
             <h4>My Events</h4>
             {myEvents.map((event) =>
-              <EventCard {...event} />
+              <EventCard key={event.identifier} {...event} />
             )}
           </div>
         </div>

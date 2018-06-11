@@ -59,7 +59,8 @@ class AttestGenerator extends Component {
           // and described further in schemas.md
           identifier: uuid(),
           organizer: address,
-          startDate: (new Date(date)).toISOString(),
+          // FAKE DATE FOR NOW
+          startDate: (new Date()).toISOString(),
           name, location, about
         }
       }
@@ -101,7 +102,7 @@ class AttestGenerator extends Component {
             <div className="fields">
               <label>Event Dates</label>
               <div className="field">
-                <input type="date" name="startDate" value={date} onChange={this.handleChange} placeholder="Event Start Date"/>
+                <input type="date" name="startDate" value={date} onChange={this.handleChange} placeholder={new Date()}/>
               </div>
               {/*
                 TODO: Add end date and time
