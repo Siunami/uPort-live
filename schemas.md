@@ -14,8 +14,7 @@ claim: {
 		name: string,		// name for the event
 		about: string,		// description of the event
 		location: string,	// where is the event happening
-		startDate: string,	// what date is the event happening
-		doorTime: string, 	// 
+		startDate: string,	// (ISO datetime) what date is the event happening
 	}
 }
 ```
