@@ -13,7 +13,6 @@ function userLoggedIn(user) {
 
 export function loginUser() {
   return function(dispatch) {
-    console.log('LOGGING IN USER')
     // UPort and its web3 instance are defined in ./../../../util/wrappers.
     // Request uPort persona of account passed via QR
     uport.requestCredentials({
@@ -21,7 +20,6 @@ export function loginUser() {
       // This is where we request the uPort Live Events
       verified: ['UPORT_LIVE_EVENT']
     }).then((credentials) => {
-      console.log(credentials)
       dispatch(userLoggedIn(credentials))
 
       // Used a manual redirect here as opposed to a wrapper.

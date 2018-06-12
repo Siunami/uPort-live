@@ -15,8 +15,6 @@ import { uport } from '../../util/connectors'
 class AttestGenerator extends Component {
   constructor(props, { authData }) {
     super(props)
-    console.log(props)
-    console.log(authData)
 
     authData = this.props
     this.state = {}
@@ -104,12 +102,9 @@ class AttestGenerator extends Component {
               <div className="field">
                 <input type="date" name="startDate" value={date} onChange={this.handleChange} placeholder={new Date()}/>
               </div>
-              {/*
-                TODO: Add end date and time
-                <div className="field">
-                  <input type="date" name="endDate" value={} onChange={this.handleChange} placeholder="Event End Date"/>
-                </div>
-              */}
+              <div className="field">
+                <input type="date" name="endDate" value={} onChange={this.handleChange} placeholder="Event End Date"/>
+              </div>
             </div>
             <input type="submit" value="Create!" />
           </form>

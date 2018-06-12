@@ -3,35 +3,31 @@ import { browserHistory } from 'react-router'
 
 import EventCard from './EventCard'
 
+/**
+ * @classdesc
+ * This component will display all of a user's own events
+ */
 class Dashboard extends Component {
-  constructor(props, { authData }) {
+  constructor(props) {
     super(props)
-    console.log('props', props)
-    console.log('auth', authData)
 
-    authData = this.props
-
+    let {authData} = props;
     this.state = {
+      // THIS JUST GETS A SINGLE ONE, NOT ALL OF THEM
       events: authData.UPORT_LIVE_EVENT
     }
   }
 
-  handleEvent(){
+  handleEvent() {
     browserHistory.push("/AttestGenerator");
   }
 
   render() {
-    const myEvents = [this.state.events]
+    // HACKING THIS INTO A LIST FOR NOW
+    // Should ideally be a list of *all* attestations already
+    const ownEvents = [this.state.events]
 
-    // TODO: extract list of created events from authData
-    // Something like this should be returned by the credentials requested in loginbutton/LoginButtonActions.js
-    // const myEvents = [{
-    //   identifier: 'test-id',
-    //   name: 'Ethereal Summit 2018',
-    //   startDate: '2018-05-11T14:45:18+00:00',
-    //   location: 'Knockdown Center 52-19 Flushing Ave, Maspeth, NY',
-    //   about: 'Ethereal Summit brings together adventurous thinkers from all walks of life',
-    // }]
+    console.log(ownEvents)
 
     return (
       <main className="container">
@@ -39,8 +35,8 @@ class Dashboard extends Component {
           <div className="pure-u-1-1">
             <h1>{this.props.authData.name}'s Dashboard</h1>
             <button onClick={this.handleEvent}>New Event</button>
-            <h4>My Events</h4>
-            {myEvents.map((event) =>
+            <h4>Your Events</h4>
+            {ownEvents.map((event) =>
               <EventCard key={event.identifier} {...event} />
             )}
           </div>
