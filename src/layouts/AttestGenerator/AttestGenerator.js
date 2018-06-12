@@ -102,9 +102,9 @@ class AttestGenerator extends Component {
               <div className="field">
                 <input type="date" name="startDate" value={date} onChange={this.handleChange} placeholder={new Date()}/>
               </div>
-              <div className="field">
+              {/*<div className="field">
                 <input type="date" name="endDate" value={} onChange={this.handleChange} placeholder="Event End Date"/>
-              </div>
+              </div>*/}
             </div>
             <input type="submit" value="Create!" />
           </form>
