@@ -35,7 +35,6 @@ claim: {
 		about: string,
 		location: string,
 		startDate: string,
-		doorTime: string, (maybe?)
 	}
 }
 ```
