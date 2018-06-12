@@ -10,6 +10,10 @@ class Dashboard extends Component {
     console.log('auth', authData)
 
     authData = this.props
+
+    this.state = {
+      events: authData.UPORT_LIVE_EVENT
+    }
   }
 
   handleEvent(){
@@ -17,15 +21,17 @@ class Dashboard extends Component {
   }
 
   render() {
+    const myEvents = [this.state.events]
+
     // TODO: extract list of created events from authData
     // Something like this should be returned by the credentials requested in loginbutton/LoginButtonActions.js
-    const myEvents = [{
-      identifier: 'test-id',
-      name: 'Ethereal Summit 2018',
-      startDate: '2018-05-11T14:45:18+00:00',
-      location: 'Knockdown Center 52-19 Flushing Ave, Maspeth, NY',
-      about: 'Ethereal Summit brings together adventurous thinkers from all walks of life',
-    }]
+    // const myEvents = [{
+    //   identifier: 'test-id',
+    //   name: 'Ethereal Summit 2018',
+    //   startDate: '2018-05-11T14:45:18+00:00',
+    //   location: 'Knockdown Center 52-19 Flushing Ave, Maspeth, NY',
+    //   about: 'Ethereal Summit brings together adventurous thinkers from all walks of life',
+    // }]
 
     return (
       <main className="container">

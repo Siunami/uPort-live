@@ -19,9 +19,8 @@ export function loginUser() {
     uport.requestCredentials({
       requested: ['name', 'avatar', 'phone', 'country'],
       // This is where we request the uPort Live Events
-      vefified: 'UPORT_LIVE_EVENT'
+      verified: ['UPORT_LIVE_EVENT']
     }).then((credentials) => {
-      console.log('got credentials bro')
       console.log(credentials)
       dispatch(userLoggedIn(credentials))
 
