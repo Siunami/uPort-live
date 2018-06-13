@@ -13,7 +13,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props)
 
-    let {authData} = props;
+    let {authData} = props
 
     this.state = {
       // THIS JUST GETS A SINGLE ONE, NOT ALL OF THEM
@@ -22,7 +22,7 @@ class Dashboard extends Component {
   }
 
   handleEvent() {
-    browserHistory.push("/AttestGenerator");
+    browserHistory.push("/AttestGenerator")
   }
 
   render() {
@@ -38,8 +38,8 @@ class Dashboard extends Component {
           <h2>Welcome, {username}!</h2>
           <button onClick={this.handleEvent}>Create a new Event</button>
           <h4>Events You Organize</h4>
-          {ownEvents.map(({identifier, ...rest}) =>
-            <EventCard key={identifier} {...rest} />
+          {ownEvents.map(({identifier, ...details}) =>
+            <EventCard key={identifier} {...details} />
           )}
         </div>
       </main>
