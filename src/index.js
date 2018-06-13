@@ -14,7 +14,6 @@ import Profile from './user/layouts/profile/Profile'
 
 // Redux Store
 import store from './store'
-// import AttestGenerator from './layouts/AttestGenerator/AttestGenerator.js';
 
 const history = syncHistoryWithStore(browserHistory, store)
 

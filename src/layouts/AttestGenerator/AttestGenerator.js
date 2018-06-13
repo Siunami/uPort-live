@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Connect, SimpleSigner } from 'uport-connect'
 
 import uuid from '../../util/uuid'
 import { uport } from '../../util/connectors'
@@ -7,6 +6,7 @@ import { uport } from '../../util/connectors'
 /**
  * @classdesc
  * The event ownership attestation generator component 
+ *
  * TODO: Maybe rename this to something more specific, 
  *       as there are multiple attestations we will end up issuing
  * TODO: Inject this into a modal of some sort instead of taking up
@@ -66,17 +66,17 @@ class AttestGenerator extends Component {
   }
 
   /**
-   * Display a form with fields to define a new event.  Creation of the event will issue an
-   * attestation to the signed-in user 
+   * Display a form with fields to define a new event.  
+   * Creation of the event will issue an attestation to the signed-in user
+   * with the scanning of a QR code
    */
   render() {
     const {name, location, date, about} = this.state
 
     return (
       <main className="container">
-        <div className="pure-g">
-          <div className="pure-u-1-1">
-          <h1>Attest</h1>
+        <div className="fullpage">
+          <h1>Create an Event</h1>
 
           <form className="ui form" onSubmit={this.handleSubmit}>
             <h4 className="ui dividing header">Create an Event</h4>
@@ -108,7 +108,6 @@ class AttestGenerator extends Component {
             </div>
             <input type="submit" value="Create!" />
           </form>
-          </div>
         </div>
       </main>
     )

@@ -1,12 +1,29 @@
-/* PAGE */
+/********************************************************************** 
+ * Global styles for the uPort-live application
+ *
+ * This is where we define background colors, fonts, and other styles 
+ * consistent with the uPort aesthetic to maintain consistency with 
+ * other uPort products
+ * 
+ *********************************************************************/
 
-body,
-.pure-g [class*=pure-u] {
+* {
+  /* Border-box everywhere to keep us all sane */
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3 {
   font-family: 'Open Sans', sans-serif;
 }
 
-h1, h2, h3 {
-  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+main {
+  background-color: #5C50CA;
+  min-height: 100vh;
+  color: #fff;
+}
+
+button {
+  cursor: pointer;
 }
 
 pre {
@@ -16,53 +33,78 @@ pre {
   background: #eee;
 }
 
+/** 
+ * Utility classes for common poisitoning use cases, could be repalced with framework classes,
+ * but starting small
+ */
 .container {
-  box-sizing: border-box;
   width: 100%;
   padding: 45px 20px;
 }
 
-.pure-button-primary {
-  background-color: #0c1a2b;
+/* For full-page content that should be front and center, e.g. the landing page or an error page */
+.fullpage {
+  margin: 5% auto 0 auto;
+  width: 80%;
+  text-align: center;
 }
 
-.pure-button-primary:hover {
-  background-color: #233e5e;
+/* The logo, when displayed in banner/emphasis style */
+.uport-logo {
+  height: 10em;
 }
 
-.pure-form input[type="text"]:focus {
-  border-color: #0c1a2b;
+.uport-logo-icon {
+  height: 16px;
+  margin-right: 5px;
+  /* Fix the baseline of the image to align with text */
+  transform: translateY(2px);
 }
 
-/* NAVBAR */
-
-.navbar {
-  position: fixed;
-  padding: 5px;
-  background: #0c1a2b;
-  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+/* Login button styles, could be moved */
+.login-container {
+  text-align: center;
 }
 
-.navbar a {
+.login-button {
+  border-radius: 0.5em;
+  border: none;
+  background-color: transparent;
   color: #fff;
 }
 
-.navbar a:active,
-.navbar a:focus,
-.navbar a:hover {
+/**********************************************************************
+ * NAVBAR 
+ * TODO: maybe pop navbar out into a separate stylesheet 
+ *********************************************************************/
+nav {
+  position: fixed;
+  width: 100%;
+  white-space: nowrap;
+  padding: 5px 15px;
+  background: #0c1a2b;
+  font-size: 1.25rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.nav-heading {
+  font-weight: bold;
+  text-transform: none;
+  display: inline-flex;
+}
+
+nav .nav-heading:hover,
+nav .menu-item:hover {
   background: #233e5e;
 }
 
-.navbar .pure-menu-heading {
-  font-weight: bold;
-  text-transform: none;
+.nav-heading a {
+  color: #fff;
 }
 
-.navbar .navbar-right {
+nav ul.navbar-right {
   float: right;
-}
-
-.navbar .uport-logo {
-  height: 16px;
-  margin-right: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }

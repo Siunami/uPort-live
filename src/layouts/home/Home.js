@@ -2,16 +2,23 @@ import React, { Component } from 'react'
 
 import LoginButtonContainer from '../../user/ui/loginbutton/LoginButtonContainer'
 
+import uPortLogo from '../../img/uport-logo.svg'
+
 class Home extends Component {
   render() {
     return(
       <main className="container">
-        <div className="pure-g">
-          <div className="pure-u-1-1">
-            <div className="banner">
-              <h1 className="banner-head">Create badges for attendees with uPort</h1>
-            </div>
-          </div>
+        <div className="fullpage">
+          <img className="uport-logo" src={uPortLogo} alt="uPort Logo" />
+          <h1 className="banner-head">Create Proof of Attendence badges for your events with uPort Live</h1>
+          <LoginButtonContainer 
+            style={{
+              border: '1px solid #fff', 
+              padding: '0.25em 0.5em',
+              fontSize: '1.5rem'
+            }}>
+            <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" /> Login with uPort
+          </LoginButtonContainer>
         </div>
       </main>
     )
