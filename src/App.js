@@ -14,7 +14,7 @@ import './App.css'
 class App extends Component {
   render() {
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
-      <span>
+      <ul className="navbar-right">
         <li className="menu-item">
           <Link to="/dashboard" className="menu-link">Dashboard</Link>
         </li>
@@ -22,13 +22,13 @@ class App extends Component {
           <Link to="/profile" className="menu-link">Profile</Link>
         </li>
         <LogoutButtonContainer />
-      </span>
+      </ul>
     )
 
     const OnlyGuestLinks = HiddenOnlyAuth(() =>
-      <span>
+      <ul className="navbar-right">
         <LoginButtonContainer>login</LoginButtonContainer>
-      </span>
+      </ul>
     )
 
     return (
@@ -37,10 +37,8 @@ class App extends Component {
           <div className="nav-heading">
             <Link to="/">uPort Live</Link>
           </div>
-          <ul className="navbar-right">
-            <OnlyGuestLinks />
-            <OnlyAuthLinks />
-          </ul>
+          <OnlyGuestLinks />
+          <OnlyAuthLinks />
         </nav>
 
         {this.props.children}

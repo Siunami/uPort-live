@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
 
 import uuid from '../../util/uuid'
 import { uport } from '../../util/connectors'
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 /**
  * @classdesc
@@ -17,9 +21,12 @@ class AttestGenerator extends Component {
     super(props)
 
     authData = this.props
-    this.state = {}
+    this.state = {
+      startDate: moment(),
+      endDate: moment()
+    }
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -29,7 +36,7 @@ class AttestGenerator extends Component {
    * @param {String} event.target.name  -- the name of the state variable and input 'name' field
    * @param {String} event.target.value -- the string value of the input field after the change
    */
-  handleChange(event) {
+  handleFieldChange(event) {
     const {name, value} = event.target
     this.setState({[name]: value})
   }
@@ -44,7 +51,7 @@ class AttestGenerator extends Component {
     event.preventDefault();
 
     const {address} = this.props.authData
-    const {name, location, date, about} = this.state
+    const {name, location, startDate, endDate, about} = this.state
 
     // TODO: Replace with a call to a lambda function which will do the signing
     //       there may also be some csrf protection we need to do on that as well (?)
@@ -58,7 +65,8 @@ class AttestGenerator extends Component {
           identifier: uuid(),
           organizer: address,
           // FAKE DATE FOR NOW
-          startDate: (new Date()).toISOString(),
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
           name, location, about
         }
       }
@@ -71,7 +79,10 @@ class AttestGenerator extends Component {
    * with the scanning of a QR code
    */
   render() {
-    const {name, location, date, about} = this.state
+    const {name, location, startDate, endDate, about} = this.state
+
+    const updateStartDate = (startDate) => this.setState({startDate})
+    const updateEndDate = (endDate) => this.setState({endDate})
 
     return (
       <main className="container">
@@ -79,32 +90,32 @@ class AttestGenerator extends Component {
           <h1>Create an Event</h1>
 
           <form className="ui form" onSubmit={this.handleSubmit}>
-            <h4 className="ui dividing header">Create an Event</h4>
-
             <div className="field">
               <label>Event Name</label>
-              <input type="text" name="name" value={name} onChange={this.handleChange} placeholder="Event Name"/>
+              <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
             </div>
 
             <div className="field">
               <label>About</label>
-              <input type="text" name="about" value={about} onChange={this.handleChange} placeholder="Describe your event"/>
+              <input type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"/>
             </div>
 
             <div className="field">
               <label>Event Location</label>
               <div className="field">
-                <input type="text" name="location" value={location} onChange={this.handleChange} placeholder="Event location"/>
+                <input type="text" name="location" value={location} onChange={this.handleFieldChange} placeholder="Event location"/>
               </div>
             </div>
-            <div className="fields">
-              <label>Event Dates</label>
-              <div className="field">
-                <input type="date" name="startDate" value={date} onChange={this.handleChange} placeholder={new Date()}/>
+            <div className="field">
+              <div className="fields">
+                <label>Event Dates</label>
+                <div className="field">
+                  <DatePicker selected={startDate} onChange={updateStartDate}/>
+                </div>
+                <div className="field">
+                  <DatePicker selected={endDate} onChange={updateEndDate}/>
+                </div>
               </div>
-              {/*<div className="field">
-                <input type="date" name="endDate" value={} onChange={this.handleChange} placeholder="Event End Date"/>
-              </div>*/}
             </div>
             <input type="submit" value="Create!" />
           </form>
