@@ -1,30 +1,21 @@
 import { Connect, SimpleSigner } from 'uport-connect'
 import { Credentials } from 'uport'
+
 const registryArtifact = require('uport-registry')
 
-const signer = SimpleSigner('2000049c7b733cd95f8622f65614c06d52402b7962534b76da001c4e1c42af5c');
+// TEMPORARY CLIENT SIDE SIGNER.
+// TODO: REPLACE WITH FIREBASE LAMBDA FUNCTION
+const signer = SimpleSigner('cee5a66435456e057bc58e9cf6a7a83a4d40f826744975a059ec6da8610f16df')
 
-// export const credentials = new Credentials({  
-//   appName: 'App Name',
-//   address: '2ogMjGdGFH34nByWBi9AmdBze7AU1pETADo',
-//   signer: signer,
-//   networks: {  
-//     id: '0x4',
-//     registry: registryArtifact.networks['4'].address,
-//     rpcUrl: 'https://rinkeby.infura.io' 
-//   }
-// });
-
+// Unsure what this is exaclty for ? 
 export const credentials = new Credentials({
   appName: 'Credential Tutorial',
   address: '2ooQK27bB5CK51hQVjRScEMRoHvwM74Uj5a',
   signer: signer
 })
 
-console.log(credentials);
-
-export const uport = new Connect('Test app', {
-  clientId: '2ogMjGdGFH34nByWBi9AmdBze7AU1pETADo',
+export const uport = new Connect('uPort Live', {
+  clientId: '2p2BR9kv8xPPiNFL7bHUZXg4idyUYfaCwfg',
   network: 'rinkeby',
   signer: signer
 })

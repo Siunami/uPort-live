@@ -1,103 +1,124 @@
 import React, { Component } from 'react'
-import { Connect, SimpleSigner } from 'uport-connect'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
 
-// import { uport } from '../../util/connectors'
+import uuid from '../../util/uuid'
+import { uport } from '../../util/connectors'
 
+import 'react-datepicker/dist/react-datepicker.css';
+
+/**
+ * @classdesc
+ * The event ownership attestation generator component 
+ *
+ * TODO: Maybe rename this to something more specific, 
+ *       as there are multiple attestations we will end up issuing
+ * TODO: Inject this into a modal of some sort instead of taking up
+ *       its own page ? 
+ */
 class AttestGenerator extends Component {
   constructor(props, { authData }) {
     super(props)
+
     authData = this.props
-    this.state = {}
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      startDate: moment(),
+      endDate: moment()
+    }
+
+    this.handleFieldChange = this.handleFieldChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(event){
-      var target = event.target;
-      var name = target.name;
-      this.setState({[name]: target.value});
+  /**
+   * Generic method for updating a controlled field
+   * @param {Event}  event              -- an onChange event fired by a field
+   * @param {String} event.target.name  -- the name of the state variable and input 'name' field
+   * @param {String} event.target.value -- the string value of the input field after the change
+   */
+  handleFieldChange(event) {
+    const {name, value} = event.target
+    this.setState({[name]: value})
   }
 
+  /**
+   * Issue an event ownership credential, indicating the creation of an event.
+   * The fields of the event ownership credential are populated by the controlled fields
+   * of the input form
+   * @param {Event} event -- the form submission event, only captured to prevent default
+   */
   handleSubmit(event) {
-    console.log(this.state);
     event.preventDefault();
-    // TODO: Issuer and image for attestation happens in appmanager.
-    // Need to create a new app for every 
-    // https://github.com/uport-project/appmanager-cli/blob/master/manager.js
-    // TODO: Check to make sure all fields have been filled
-    const uport = new Connect('uPort Live', {
-        clientId: '2p2BR9kv8xPPiNFL7bHUZXg4idyUYfaCwfg',
-        network: 'rinkeby',
-        signer: SimpleSigner('cee5a66435456e057bc58e9cf6a7a83a4d40f826744975a059ec6da8610f16df')
-      })
-    // FUTURE TODO: Check credentials with event database before offering attestation.
-    // OR: Request an attestation from user for login.
-    var d = new Date();
-    var month = ['Jan', 'Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov', 'Dec'];
+
+    const {address} = this.props.authData
+    const {name, location, startDate, endDate, about} = this.state
+
+    // TODO: Replace with a call to a lambda function which will do the signing
+    //       there may also be some csrf protection we need to do on that as well (?)
     uport.attestCredentials({
-        sub: this.props.authData.address,
-        claim: {
-        "Event": this.state.eventName,
-        "Issued": month[d.getMonth()] + " " + d.getDate() + "," + d.getFullYear(),
-        "Location": this.state.address + ", " + this.state.city + ", " + this.state.state + ", " + this.state.zip + " " + this.state.country,
-        "Event Start": this.state.eventStart,
-        "Event End": this.state.eventEnd,
-        "Details": "Proof of Attendance"
+      sub: address,
+      claim: {
+        // Single key in claim is required for standardizing event ownership credentials
+        UPORT_LIVE_EVENT: {
+          // Individual fields are taken from http://schema.org/Event 
+          // and described further in schemas.md
+          identifier: uuid(),
+          organizer: address,
+          // FAKE DATE FOR NOW
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          name, location, about
         }
+      }
     })
   }
 
+  /**
+   * Display a form with fields to define a new event.  
+   * Creation of the event will issue an attestation to the signed-in user
+   * with the scanning of a QR code
+   */
   render() {
-    return(
-      <main className="container">
-        <div className="pure-g">
-          <div className="pure-u-1-1">
-            <h1>Attest</h1>
+    const {name, location, startDate, endDate, about} = this.state
 
-            <form className="ui form" onSubmit={this.handleSubmit}>
-                <h4 className="ui dividing header">Attestation Generator</h4>
+    const updateStartDate = (startDate) => this.setState({startDate})
+    const updateEndDate = (endDate) => this.setState({endDate})
+
+    return (
+      <main className="container">
+        <div className="fullpage">
+          <h1>Create an Event</h1>
+
+          <form className="ui form" onSubmit={this.handleSubmit}>
+            <div className="field">
+              <label>Event Name</label>
+              <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
+            </div>
+
+            <div className="field">
+              <label>About</label>
+              <input type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"/>
+            </div>
+
+            <div className="field">
+              <label>Event Location</label>
+              <div className="field">
+                <input type="text" name="location" value={location} onChange={this.handleFieldChange} placeholder="Event location"/>
+              </div>
+            </div>
+            <div className="field">
+              <div className="fields">
+                <label>Event Dates</label>
                 <div className="field">
-                    <label>Event Name</label>
-                    <input type="text" name="eventName" value={this.state.value} onChange={this.handleChange} placeholder="Event Name"/>
+                  <DatePicker selected={startDate} onChange={updateStartDate}/>
                 </div>
                 <div className="field">
-                    <label>About</label>
-                    <input type="text" name="about" value={this.state.value} onChange={this.handleChange} placeholder="About"/>
+                  <DatePicker selected={endDate} onChange={updateEndDate}/>
                 </div>
-                <div className="field">
-                    <label>Event Location</label>
-                    <div className="fields">
-                        <div className="field">
-                            <input type="text" name="address" value={this.state.value} onChange={this.handleChange} placeholder="Street Address"/>
-                        </div>
-                        <div className="field">
-                            <input type="text" name="city" value={this.state.value} onChange={this.handleChange} placeholder="City"/>
-                        </div>
-                        <div className="field">
-                            <input type="text" name="state" value={this.state.value} onChange={this.handleChange} placeholder="State"/>
-                        </div>
-                        <div className="field">
-                            <input type="text" name="zip" value={this.state.value} onChange={this.handleChange} placeholder="Zip Code"/>
-                        </div>
-                        <div className="field">
-                            <input type="text" name="country" value={this.state.value} onChange={this.handleChange} placeholder="Country"/>
-                        </div>
-                    </div>
-                </div>
-                <div className="field">
-                    <label>Event Dates</label>
-                    <div className="fields">
-                        <div className="field">
-                            <input type="text" name="eventStart" value={this.state.value} onChange={this.handleChange} placeholder="Event Start Date"/>
-                        </div>
-                        <div className="field">
-                            <input type="text" name="eventEnd" value={this.state.value} onChange={this.handleChange} placeholder="Event End Date"/>
-                        </div>
-                    </div>
-                </div>
-                <input type="submit" value="Submit" />
-            </form>
-          </div>
+              </div>
+            </div>
+            <input type="submit" value="Create!" />
+          </form>
         </div>
       </main>
     )

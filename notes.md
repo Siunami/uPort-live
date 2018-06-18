@@ -1,0 +1,20 @@
+# Development Notes
+
+This is just a document for keeping track of random thoughts during the development process, stumbling blocks, small changes, inconsistencies etc.  This will supplement the commit logs with some more detail to avoid losing minor changes to the wind, keep style/conventions consistent, and keep track of unfruitful lines of inquiry to avoid repeated work.  This will be organized generally as stream of consciousness / note taking, and may not be the most organized, but written down is better than forgotten!
+
+In particular, I'm creating this while on an 8 hour flight with no internet, so without github issues, this is the next best thing, and hey it might come in handy even when the internet comes back !
+
+## 6/13/18 Rob
+- Doing some style cleanup
+	- Combing through the CSS on the project, looks like 'pure' is a CSS framework that ships with the truffle box.  There isn't a whole lot of dependence on this at the moment, so I am going to try to exorcise it to get rid of some of the jankyness.  Whether or not we stay with semantic as a css framework, we definitely need pure out of the way.  Also arial narrow looks terrible, swapping out Open Sans until we have a better idea.
+	- Updating the LoginButtonContainer to accept children, got sick of hacking out different cases of the login button, so now you can specify the contents of the login button directly (e.g. does it contain the logo, what is the button's text, etc.)
+	- Feeling like the global CSS folder is going to get icky, and it feels more in the mindset of react to keep CSS alongside the components.  Without pure, the only global css is App.css, index.css, and the stub for Open Sans.  open-sans.css is going into the fonts folder, css folder is getting axed, and individual components will get their styles right next to them.
+- Architecture musings
+	- So when we swap out the signing with uport-connect for a lambda function, we're going to need some way of authenticating the request that is made to the lambda service.  If it's not a full server, we can't very well to standard CSRF token passing, but maybe we can design the service itself so that it just... works ? Aka the integrity of the credentials are such that forging a request to the lambda function is as detectable as creating a bogus event to begin with.  Something sent to the server should be signed by the uport user, so that the lambda function can check for the fact that the signing party is the same as the address inside the request.  If a different user tries to forge a request, the owner field and the signature will not match.
+- Other thoughts looking forward
+	- We'll need some sort of about/explainer page to pitch the concept, either as a separate page or below the splash / login area. This could probably just be a markdown file which we can include into the site with a react-markdown importer.  This can then double as an info page to link to on the github/elsewhere and will be easily editable by non-technical team members
+	- More vision for the dashboard page / list of events:
+	- Potential issue: many people will likely organize very few events, so their dashboards will be quite empty.  How do we set up the layout so as not to look totally barren for these users? related: down the line, we may want the dashboard to be tabbed according to the types of attestations being issued, (events, stickers, arbitrary other pieces of data you want to issue to others).  On the technical side, these different types of attestations can be categorized by different primary keys in the claim (i.e. expanding beyond UPORT_LIVE_EVENT)
+	- After we begin issuing attestations for attendance etc., we'll want to expand the dashboard functionality to show attestations received as well as those created.  Some sort of organized version of the uport mobile claims dashboard?
+- Note on code style: I've seen some other repos in uPort using StandardJS for style, and haven't run into another style guide, so I think that's the one to use.  When I get a chance I'll try to configure the linter to style check for Standard, but in brief: no semicolons
+

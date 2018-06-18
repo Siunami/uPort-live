@@ -1,52 +1,46 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import Attest from '../../user/ui/attestbutton/AttestComponent'
 
+import EventCard from './EventCard'
+
+import './Dashboard.css'
+
+/**
+ * @classdesc
+ * This component will display all of a user's own events
+ */
 class Dashboard extends Component {
-  constructor(props, { authData }) {
+  constructor(props) {
     super(props)
-    authData = this.props
+
+    let {authData} = props
+
+    this.state = {
+      // THIS JUST GETS A SINGLE ONE, NOT ALL OF THEM
+      events: authData && authData.UPORT_LIVE_EVENT
+    }
   }
 
-  handleEvent(){
-    browserHistory.push("/AttestGenerator");
+  handleEvent() {
+    browserHistory.push("/AttestGenerator")
   }
 
   render() {
-    return(
-      <main className="container">
-        <div className="pure-g">
-          <div className="pure-u-1-1">
-            <h1>{this.props.authData.name}'s Dashboard</h1>
-            <button onClick={this.handleEvent}>New Event</button>
-            <h4>My Events</h4>
-            <div className="ui card">
-                <div className="content">
-                  <i className="right floated check icon"><p>128</p></i>
-                  <div className="header">Ethereal Summit 2018</div>
-                  <div className="meta">Knockdown Center | May 11-12</div>
-                  <hr></hr>
-                  <div className="description">
-                    <p><b>About</b>: Ethereal Summit brings together adventurous thinkers from all walks of life.</p>
-                    <p><b>Location</b>: 52-19 Flushing Ave, Maspeth, NY 11378</p>
-                    <p><b>Start Date</b>: May 11, 2018</p>
-                    <p><b>End Date</b>: May 11, 2018</p>
-                    <p><b>Details</b>: Proof of Attendance</p>
-                  </div>
-                </div>
-                <div className="extra content">
-                  <span className="left floated like">
-                    <i className="edit icon">
-                    </i>
-                  </span>
-                  <span className="right floated star">
-                    <i className="trash icon">
-                    </i>
+    // HACKING THIS INTO A LIST FOR NOW
+    // Should ideally be a list of *all* attestations already
+    const ownEvents = [this.state.events || {}]
+    const username = this.props.authData
+      && this.props.authData.name
 
-                  </span>
-                </div>
-              </div>
-          </div>
+    return (
+      <main className="container">
+        <div className="fullpage">
+          <h2>Welcome, {username}!</h2>
+          <button onClick={this.handleEvent}>Create a new Event</button>
+          <h4>Events You Organize</h4>
+          {ownEvents.map(({identifier, ...details}) =>
+            <EventCard key={identifier} {...details} />
+          )}
         </div>
       </main>
     )
