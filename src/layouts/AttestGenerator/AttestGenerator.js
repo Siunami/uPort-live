@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
+import { browserHistory } from 'react-router'
 import moment from 'moment'
 
 import uuid from '../../util/uuid'
@@ -70,7 +71,9 @@ class AttestGenerator extends Component {
           name, location, about
         }
       }
-    })
+    }).then(() => 
+      browserHistory.push('/dashboard')
+    )
   }
 
   /**
