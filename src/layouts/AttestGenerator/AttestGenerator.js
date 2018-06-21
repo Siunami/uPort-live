@@ -2,11 +2,30 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import { browserHistory } from 'react-router'
+import { connect } from 'react-redux'
 
 import uuid from '../../util/uuid'
 import { uport } from '../../util/connectors'
 
 import 'react-datepicker/dist/react-datepicker.css';
+// import { start } from 'repl';
+
+const mapStateToProps = (state, ownProps) => {
+  return {}
+}
+
+export const ADD_ATTESTATION = "ADD_ATTESTATION";
+export const attestationAction = attestation => ({
+  type: ADD_ATTESTATION,
+  payload: attestation
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    attestationAction: attestation =>
+      dispatch(attestationAction(attestation))
+  };
+};
 
 /**
  * @classdesc
@@ -17,7 +36,7 @@ import 'react-datepicker/dist/react-datepicker.css';
  * TODO: Inject this into a modal of some sort instead of taking up
  *       its own page ? 
  */
-class AttestGenerator extends Component {
+export class AttestGenerator extends Component {
   constructor(props, { authData }) {
     super(props)
 
@@ -50,20 +69,22 @@ class AttestGenerator extends Component {
    */
   handleSubmit(event) {
     event.preventDefault();
-
     const {address} = this.props.authData
     const {name, location, startDate, endDate, about} = this.state
 
+    const uuidNumber = uuid();
+
+    // TODO: Confirm all fields have been filled out
     // TODO: Replace with a call to a lambda function which will do the signing
     //       there may also be some csrf protection we need to do on that as well (?)
-    uport.attestCredentials({
+    var attestation = uport.attestCredentials({
       sub: address,
       claim: {
         // Single key in claim is required for standardizing event ownership credentials
         UPORT_LIVE_EVENT: {
           // Individual fields are taken from http://schema.org/Event 
           // and described further in schemas.md
-          identifier: uuid(),
+          identifier: uuidNumber,
           organizer: address,
           // FAKE DATE FOR NOW
           startDate: startDate.toISOString(),
@@ -71,8 +92,17 @@ class AttestGenerator extends Component {
           name, location, about
         }
       }
+    }).then(function(data){
+      this.props.attestationAction({
+        identifier:uuidNumber,
+        organizer: address,
+        // FAKE DATE FOR NOW
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        name, location, about
+      })
+      browserHistory.push('/dashboard');
     })
-    browserHistory.push('/dashboard')
   }
 
   /**
@@ -127,4 +157,9 @@ class AttestGenerator extends Component {
   }
 }
 
-export default AttestGenerator
+const AttestContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AttestGenerator)
+
+export default AttestContainer

@@ -1,9 +1,22 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+// import { connect } from "react-redux";
+import store from '../../store'
 
 import EventCard from './EventCard'
 
 import './Dashboard.css'
+
+// const mapStateToProps = (state, ownProps) => {
+//   return {}
+// }
+
+// export const addAttestation = "addAttestation";
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     addAttestation: attestation => dispatch(addAttestation(attestation))
+//   };
+// };
 
 /**
  * @classdesc
@@ -17,8 +30,24 @@ class Dashboard extends Component {
 
     this.state = {
       // THIS JUST GETS A SINGLE ONE, NOT ALL OF THEM
-      events: authData && authData.UPORT_LIVE_EVENT
+      events: []
     }
+  }
+
+  componentDidMount(){
+
+    var data = store.getState();
+    console.log(data);
+    var events = data.user.data.verified;
+    var newEvents = data.attestation.data;
+    var attestations = [];
+    for (var i = 0; i < events.length; i++) {
+      attestations.push(events[i].claim.UPORT_LIVE_EVENT);
+    }
+    for (var i = 0; i < newEvents.length; i++) {
+      attestations.push(newEvents[i]);
+    }
+    this.setState({events: attestations});
   }
 
   handleEvent() {
@@ -28,7 +57,7 @@ class Dashboard extends Component {
   render() {
     // HACKING THIS INTO A LIST FOR NOW
     // Should ideally be a list of *all* attestations already
-    const ownEvents = [this.state.events || {}]
+    const ownEvents = this.state.events
     const username = this.props.authData
       && this.props.authData.name
 
@@ -38,8 +67,8 @@ class Dashboard extends Component {
           <h2>Welcome, {username}!</h2>
           <button onClick={this.handleEvent}>Create a new Event</button>
           <h4>Events You Organize</h4>
-          {ownEvents.map(({identifier, ...details}) =>
-            <EventCard key={identifier} {...details} />
+          {ownEvents.map((event) =>
+            <EventCard key={event.identifier} {...event} />
           )}
         </div>
       </main>
@@ -47,4 +76,11 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+// const DashboardContainer = connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Dashboard)
+
+const DashboardContainer = Dashboard
+
+export default DashboardContainer
