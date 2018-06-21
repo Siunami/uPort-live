@@ -74,10 +74,19 @@ export class AttestGenerator extends Component {
 
     const uuidNumber = uuid();
 
+    this.props.attestationAction({
+      identifier:uuidNumber,
+      organizer: address,
+      // FAKE DATE FOR NOW
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      name, location, about
+    })
+
     // TODO: Confirm all fields have been filled out
     // TODO: Replace with a call to a lambda function which will do the signing
     //       there may also be some csrf protection we need to do on that as well (?)
-    var attestation = uport.attestCredentials({
+    uport.attestCredentials({
       sub: address,
       claim: {
         // Single key in claim is required for standardizing event ownership credentials
@@ -93,14 +102,14 @@ export class AttestGenerator extends Component {
         }
       }
     }).then(function(data){
-      this.props.attestationAction({
-        identifier:uuidNumber,
-        organizer: address,
-        // FAKE DATE FOR NOW
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        name, location, about
-      })
+      // this.props.attestationAction({
+      //   identifier:uuidNumber,
+      //   organizer: address,
+      //   // FAKE DATE FOR NOW
+      //   startDate: startDate.toISOString(),
+      //   endDate: endDate.toISOString(),
+      //   name, location, about
+      // })
       browserHistory.push('/dashboard');
     })
   }
