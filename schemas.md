@@ -9,7 +9,7 @@ An event ownership attestation asserts that someone has created an event with uP
 ```javascript
 claim: {
 	UPORT_LIVE_EVENT: {
-		identifier: uuid, 	// unique identifier for the event
+		identifier: ethr-did keypair, 	// unique identifier for the event and signing key
 		organizer: uport-id,// who is the organizer, for integrity purposes
 		name: string,		// name for the event
 		about: string,		// description of the event

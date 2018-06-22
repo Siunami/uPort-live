@@ -4,6 +4,11 @@ This is just a document for keeping track of random thoughts during the developm
 
 In particular, I'm creating this while on an 8 hour flight with no internet, so without github issues, this is the next best thing, and hey it might come in handy even when the internet comes back !
 
+## 6/22/18 Rob
+- Biggest change of last two days: scrap the lambda functions, uport-live itself will no longer be the signer for event attendance attestations.  It will issue event ownership credentials, but the fact of the app issuing these is pretty inconsequential as they now contain a keypair using the ethr-did library!  So the keypair is stored inside the ownership credential, and then in the checkin flow, it is the *event* that does the signing.
+	- In an ideal world, the user would make the event a signing delegate or something similar, but until all of that functionality is ready, we can just use this event-as-identity hack.  The checkin flow is then a new instance of `Connect`, which requests credentials from the checking-in user, and then pushes them an attendance verification
+- The currently-checking-in-event will be a branch of the redux state tree, so the checkin flow is initiated by emmitting an action that saves the desired event ownership claim to that branch, and redirects to the checkin component, which simply loops on checking people in until the checkin flow is ended with another Action.
+
 ## 6/18/18 Rob
 - Trying to implement the lambda functions that can replace our event ownership attestation creator, but struggling a bit at the moment.  I think the most difficult/confusing piece is straddling between uport-connect and uport-js, in that we want to request credentials on the client side, but not have to log users in a second time when they are issued a credential by the lambda function.  Here's what I know so far:
 	- 'Logging a user in' amounts to making a `uport.requestCredentials()` call, and getting the basic info of the user after they scan the QR and approve the login request

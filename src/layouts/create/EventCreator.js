@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import DatePicker from 'react-datepicker'
 import { browserHistory } from 'react-router'
+import DatePicker from 'react-datepicker'
+import EthrDID from 'ethr-did'
 import moment from 'moment'
 
-import uuid from '../../util/uuid'
-import { uport } from '../../util/connectors'
+import { uport, web3 } from '../../util/connectors'
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -12,12 +12,10 @@ import 'react-datepicker/dist/react-datepicker.css';
  * @classdesc
  * The event ownership attestation generator component 
  *
- * TODO: Maybe rename this to something more specific, 
- *       as there are multiple attestations we will end up issuing
  * TODO: Inject this into a modal of some sort instead of taking up
- *       its own page ? 
+ *       its own page ? maybe ?
  */
-class AttestGenerator extends Component {
+class EventCreator extends Component {
   constructor(props, { authData }) {
     super(props)
 
@@ -54,18 +52,20 @@ class AttestGenerator extends Component {
     const {address} = this.props.authData
     const {name, location, startDate, endDate, about} = this.state
 
+    // Create a keypair for the event
+    const keypair = EthrDID.createKeyPair()
+
     // TODO: Replace with a call to a lambda function which will do the signing
     //       there may also be some csrf protection we need to do on that as well (?)
     uport.attestCredentials({
       sub: address,
       claim: {
         // Single key in claim is required for standardizing event ownership credentials
-        UPORT_LIVE_EVENT: {
+        uportLiveEvent: {
           // Individual fields are taken from http://schema.org/Event 
           // and described further in schemas.md
-          identifier: uuid(),
+          identifier: keypair,
           organizer: address,
-          // FAKE DATE FOR NOW
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
           name, location, about
@@ -128,4 +128,4 @@ class AttestGenerator extends Component {
   }
 }
 
-export default AttestGenerator
+export default EventCreator
