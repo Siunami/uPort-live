@@ -38,16 +38,22 @@ class Dashboard extends Component {
 
     var data = store.getState();
     console.log(data);
-    var events = data.user.data.verified;
-    var newEvents = data.attestation.data;
-    var attestations = [];
-    for (var i = 0; i < events.length; i++) {
-      attestations.push(events[i].claim.UPORT_LIVE_EVENT);
-    }
-    for (var i = 0; i < newEvents.length; i++) {
-      attestations.push(newEvents[i]);
-    }
-    this.setState({events: attestations});
+    
+    
+    // var attestations = [];
+    // if (data.user && data.user.data.verified.length > 0){
+    //   var events = data.user.data.verified;
+    //   for (var i = 0; i < events.length; i++) {
+    //     attestations.push(events[i].claim.UPORT_LIVE_EVENT);
+    //   }
+    // }
+    // if (data.attestation){
+    //   var newEvents = data.attestation.data;
+    //   for (var i = 0; i < newEvents.length; i++) {
+    //     attestations.push(newEvents[i]);
+    //   }
+    // }
+    this.setState({events: data.user.attestations});
   }
 
   handleEvent() {
@@ -67,9 +73,11 @@ class Dashboard extends Component {
           <h2>Welcome, {username}!</h2>
           <button onClick={this.handleEvent}>Create a new Event</button>
           <h4>Events You Organize</h4>
-          {ownEvents.map((event) =>
-            <EventCard key={event.identifier} {...event} />
-          )}
+          <div className="ui four column grid">
+            {ownEvents.map((event) =>
+              <EventCard key={event.identifier} {...event} />
+            )}
+          </div>
         </div>
       </main>
     )

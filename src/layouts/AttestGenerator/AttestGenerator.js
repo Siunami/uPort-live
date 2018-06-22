@@ -74,14 +74,14 @@ export class AttestGenerator extends Component {
 
     const uuidNumber = uuid();
 
-    this.props.attestationAction({
-      identifier:uuidNumber,
-      organizer: address,
-      // FAKE DATE FOR NOW
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
-      name, location, about
-    })
+    // this.props.attestationAction({
+    //   identifier:uuidNumber,
+    //   organizer: address,
+    //   // FAKE DATE FOR NOW
+    //   startDate: startDate.toISOString(),
+    //   endDate: endDate.toISOString(),
+    //   name, location, about
+    // })
 
     // TODO: Confirm all fields have been filled out
     // TODO: Replace with a call to a lambda function which will do the signing
@@ -101,15 +101,15 @@ export class AttestGenerator extends Component {
           name, location, about
         }
       }
-    }).then(function(data){
-      // this.props.attestationAction({
-      //   identifier:uuidNumber,
-      //   organizer: address,
-      //   // FAKE DATE FOR NOW
-      //   startDate: startDate.toISOString(),
-      //   endDate: endDate.toISOString(),
-      //   name, location, about
-      // })
+    }).then((data) => {
+      this.props.attestationAction({
+        identifier:uuidNumber,
+        organizer: address,
+        // FAKE DATE FOR NOW
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        name, location, about
+      })
       browserHistory.push('/dashboard');
     })
   }
