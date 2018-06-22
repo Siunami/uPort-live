@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import { browserHistory } from 'react-router'
 import moment from 'moment'
-import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 
 import uuid from '../../util/uuid'
@@ -93,11 +92,6 @@ export class AttestGenerator extends Component {
           name, location, about
         }
       }
-<<<<<<< HEAD
-    }).then(() => 
-      browserHistory.push('/dashboard')
-    )
-=======
     }).then((data) => {
       this.props.attestationAction({
         identifier:uuidNumber,
@@ -109,7 +103,6 @@ export class AttestGenerator extends Component {
       })
       browserHistory.push('/dashboard');
     })
->>>>>>> push-attestation-redux
   }
 
   /**
