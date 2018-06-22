@@ -1,0 +1,28 @@
+service: uport-live
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: develop
+  region: us-west-2
+  timeout: 30
+
+# Use the serverless-webpack plugin to transpile ES6
+plugins:
+  - serverless-webpack
+
+functions:
+  create:
+    handler: index.handleCreate
+    description: Create an ownership attestation
+    events:
+     - http:
+         path: create
+         method: post
+  issue:
+    handler: index.handleIssue
+    description: Issue an attendance attestation
+    events:
+     - http:
+         path: issue
+         method: post
