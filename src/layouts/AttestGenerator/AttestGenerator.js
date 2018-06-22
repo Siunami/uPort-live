@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import DatePicker from 'react-datepicker'
 import { browserHistory } from 'react-router'
 import moment from 'moment'
+
 import { connect } from 'react-redux'
 
 import uuid from '../../util/uuid'
@@ -96,7 +97,6 @@ export class AttestGenerator extends Component {
       this.props.attestationAction({
         identifier:uuidNumber,
         organizer: address,
-        // FAKE DATE FOR NOW
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
         name, location, about
