@@ -1,5 +1,6 @@
 const initialState = {
-  data: null
+  data: null,
+  attestations: []
 }
 
 const userReducer = (state = initialState, action) => {
@@ -15,6 +16,22 @@ const userReducer = (state = initialState, action) => {
     return Object.assign({}, state, {
       data: null
     })
+  }
+
+  if (action.type === 'ADD_ATTESTATION')
+  {
+      console.log(state);
+      return {
+      ...state, attestations: state.attestations.concat(action.payload)
+      }
+  }
+
+  if (action.type === 'GET_ATTESTATIONS')
+  {
+      console.log(state);
+      return {
+      ...state, attestations: state.attestations.concat(action.payload)
+      }
   }
 
   return state

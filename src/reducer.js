@@ -4,7 +4,7 @@ import userReducer from './user/userReducer'
 
 const reducer = combineReducers({
   routing: routerReducer,
-  user: userReducer
+  user: userReducer,
 })
 
 export default reducer

@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+// import { connect } from "react-redux";
+import store from '../../store'
 
 import EventCard from './EventCard'
 
 import './Dashboard.css'
+
+// const mapStateToProps = (state, ownProps) => {
+//   return {}
+// }
 
 /**
  * @classdesc
@@ -17,8 +23,13 @@ class Dashboard extends Component {
 
     this.state = {
       // THIS JUST GETS A SINGLE ONE, NOT ALL OF THEM
-      events: authData && authData.UPORT_LIVE_EVENT
+      events: []
     }
+  }
+
+  componentDidMount(){
+    var data = store.getState();
+    this.setState({events: data.user.attestations});
   }
 
   handleEvent() {
@@ -28,7 +39,7 @@ class Dashboard extends Component {
   render() {
     // HACKING THIS INTO A LIST FOR NOW
     // Should ideally be a list of *all* attestations already
-    const ownEvents = [this.state.events || {}]
+    const ownEvents = this.state.events
     const username = this.props.authData
       && this.props.authData.name
 
@@ -38,13 +49,22 @@ class Dashboard extends Component {
           <h2>Welcome, {username}!</h2>
           <button onClick={this.handleEvent}>Create a new Event</button>
           <h4>Events You Organize</h4>
-          {ownEvents.map(({identifier, ...details}) =>
-            <EventCard key={identifier} {...details} />
-          )}
+          <div className="ui four column grid">
+            {ownEvents.map((event) =>
+              <EventCard key={event.identifier} {...event} />
+            )}
+          </div>
         </div>
       </main>
     )
   }
 }
 
-export default Dashboard
+// const DashboardContainer = connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Dashboard)
+
+const DashboardContainer = Dashboard
+
+export default DashboardContainer
