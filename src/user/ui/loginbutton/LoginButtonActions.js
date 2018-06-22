@@ -1,8 +1,6 @@
 import { uport } from './../../../util/connectors.js'
 import { browserHistory } from 'react-router'
 
-console.log(uport)
-
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 function userLoggedIn(user) {
   return {
@@ -18,7 +16,8 @@ export function loginUser() {
     uport.requestCredentials({
       requested: ['name', 'avatar', 'phone', 'country'],
       // This is where we request the uPort Live Events
-      verified: ['UPORT_LIVE_EVENT']
+      verified: ['UPORT_LIVE_EVENT'],
+      notifications: true
     }).then((credentials) => {
       dispatch(userLoggedIn(credentials))
 
