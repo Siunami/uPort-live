@@ -74,15 +74,6 @@ export class AttestGenerator extends Component {
 
     const uuidNumber = uuid();
 
-    // this.props.attestationAction({
-    //   identifier:uuidNumber,
-    //   organizer: address,
-    //   // FAKE DATE FOR NOW
-    //   startDate: startDate.toISOString(),
-    //   endDate: endDate.toISOString(),
-    //   name, location, about
-    // })
-
     // TODO: Confirm all fields have been filled out
     // TODO: Replace with a call to a lambda function which will do the signing
     //       there may also be some csrf protection we need to do on that as well (?)

@@ -11,13 +11,6 @@ import './Dashboard.css'
 //   return {}
 // }
 
-// export const addAttestation = "addAttestation";
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     addAttestation: attestation => dispatch(addAttestation(attestation))
-//   };
-// };
-
 /**
  * @classdesc
  * This component will display all of a user's own events
@@ -35,24 +28,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount(){
-
     var data = store.getState();
-    console.log(data);
-    
-    
-    // var attestations = [];
-    // if (data.user && data.user.data.verified.length > 0){
-    //   var events = data.user.data.verified;
-    //   for (var i = 0; i < events.length; i++) {
-    //     attestations.push(events[i].claim.UPORT_LIVE_EVENT);
-    //   }
-    // }
-    // if (data.attestation){
-    //   var newEvents = data.attestation.data;
-    //   for (var i = 0; i < newEvents.length; i++) {
-    //     attestations.push(newEvents[i]);
-    //   }
-    // }
     this.setState({events: data.user.attestations});
   }
 
