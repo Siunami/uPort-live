@@ -11,12 +11,20 @@ import moment from 'moment'
  */
 export default class EventCard extends Component {
 	render() {
-    const {name, startDate, location, about} = this.props
+    const {beginCheckin, ...eventData} = this.props
     
+    // Build the function to launch the checkin flow for this particular event
+    const checkin = (event) => {
+      event.preventDefault()
+      beginCheckin(eventData)
+    }
+
+    // Extract event data for display
+    const {name, location, about, startDate} = eventData
     const date = moment(startDate).format('MMM D, YYYY')
 
 		return (
-			<div className="ui card">
+			<div className="ui card" onClick={checkin}>
         <div className="content">
           <i className="right floated check icon"></i>
           <div className="header">{name}</div>

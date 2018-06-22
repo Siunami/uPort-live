@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+import { connect } from 'react-redux'
 
 import EventCard from './EventCard'
+import { beginCheckin } from '../checkin/checkinActions'
 
 import './Dashboard.css'
 
@@ -22,7 +24,7 @@ class Dashboard extends Component {
   }
 
   handleEvent() {
-    browserHistory.push("/AttestGenerator")
+    browserHistory.push("/create")
   }
 
   render() {
@@ -32,14 +34,18 @@ class Dashboard extends Component {
     const username = this.props.authData
       && this.props.authData.name
 
+    // Extract the checkin function
+    const {beginCheckin} = this.props
+
     return (
       <main className="container">
         <div className="fullpage">
           <h2>Welcome, {username}!</h2>
           <button onClick={this.handleEvent}>Create a new Event</button>
-          <h4>Events You Organize</h4>
+          <h4>Events You Organize:</h4>
+          <em>Click an event card to check in attendees!</em>
           {ownEvents.map(({identifier, ...details}) =>
-            <EventCard key={identifier} {...details} />
+            <EventCard beginCheckin={beginCheckin} key={identifier} {...details} />
           )}
         </div>
       </main>
@@ -47,4 +53,15 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+// Connect dashboard to checkin flow
+const mapStateToProps = () => ({})
+const mapDispatchToProps = (dispatch) => ({
+  beginCheckin: (eventData) => {
+    dispatch(beginCheckin(eventData))
+  } 
+})
+
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(Dashboard)
