@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import userReducer from './user/userReducer'
-import checkinReducer from './layouts/checkin/checkinReducer'
+
+import eventsReducer from './layouts/eventsReducer'
 
 const reducer = combineReducers({
   routing: routerReducer,
   user: userReducer,
-  checkin: checkinReducer
+  events: eventsReducer
 })
 
 export default reducer

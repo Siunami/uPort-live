@@ -9,6 +9,14 @@ function userLoggedIn(user) {
   }
 }
 
+export const GET_ATTESTATIONS = 'GET_ATTESTATIONS'
+function getAttestations(attestations) {
+  return {
+    type: GET_ATTESTATIONS,
+    payload: attestations
+  }
+}
+
 export function loginUser() {
   return function(dispatch) {
     // UPort and its web3 instance are defined in ./../../../util/wrappers.
@@ -20,7 +28,11 @@ export function loginUser() {
       notifications: true
     }).then((credentials) => {
       dispatch(userLoggedIn(credentials))
-
+      var attestations = [];
+      for (var i = 0; i < credentials.verified.length; i++) {
+        attestations.push(credentials.verified[i].claim.UPORT_LIVE_EVENT);
+      }
+      dispatch(getAttestations(attestations));
       // Used a manual redirect here as opposed to a wrapper.
       // This way, once logged in a user can still access the home page.
       var currentLocation = browserHistory.getCurrentLocation()

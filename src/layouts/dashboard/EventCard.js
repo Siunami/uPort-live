@@ -24,22 +24,20 @@ export default class EventCard extends Component {
     const date = moment(startDate).format('MMM D, YYYY')
 
 		return (
-			<div className="ui card" onClick={checkin}>
-        <div className="content">
-          <i className="right floated check icon"></i>
-          <div className="header">{name}</div>
-          <div className="meta">{location} | {date}</div>
-          <hr/>
-          <div className="description">
-            <p><b>About</b>: {about}</p>
+      <div className="column">
+        <div className="ui card">
+          <div className="content">
+            <i className="right floated check icon"></i>
+            <div className="header">{name}</div>
+            <div className="meta">{location} | {date}</div>
+            <hr/>
+            <div className="description">
+              <p><b>About</b>: {about}</p>
+            </div>
           </div>
-        </div>
-
-        <div className="extra content">
-          <span className="right floated star">
-            <i className="trash icon">
-            </i>
-          </span>
+          <div className="ui bottom attached button" onClick={checkin}>
+            <i className="add icon"></i>Check in
+          </div>
         </div>
       </div>
 		)

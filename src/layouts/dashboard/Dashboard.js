@@ -14,13 +14,6 @@ import './Dashboard.css'
 class Dashboard extends Component {
   constructor(props) {
     super(props)
-
-    let {authData} = props
-
-    this.state = {
-      // THIS JUST GETS A SINGLE ONE, NOT ALL OF THEM
-      events: authData && authData.UPORT_LIVE_EVENT
-    }
   }
 
   handleEvent() {
@@ -28,25 +21,22 @@ class Dashboard extends Component {
   }
 
   render() {
-    // HACKING THIS INTO A LIST FOR NOW
-    // Should ideally be a list of *all* attestations already
-    const ownEvents = [this.state.events || {}]
-    const username = this.props.authData
-      && this.props.authData.name
+    const { ownEvents, beginCheckin, authData } = this.props
 
-    // Extract the checkin function
-    const {beginCheckin} = this.props
+    console.log(ownEvents)
 
     return (
       <main className="container">
         <div className="fullpage">
-          <h2>Welcome, {username}!</h2>
+          <h2>Welcome, {authData.name}!</h2>
           <button onClick={this.handleEvent}>Create a new Event</button>
           <h4>Events You Organize:</h4>
           <em>Click an event card to check in attendees!</em>
-          {ownEvents.map(({identifier, ...details}) =>
-            <EventCard beginCheckin={beginCheckin} key={identifier} {...details} />
+          <div className="ui four column grid">
+          {ownEvents.map((eventDetails) =>
+            <EventCard beginCheckin={beginCheckin} key={eventDetails.name} {...eventDetails} />
           )}
+          </div>
         </div>
       </main>
     )
@@ -54,7 +44,10 @@ class Dashboard extends Component {
 }
 
 // Connect dashboard to checkin flow
-const mapStateToProps = () => ({})
+const mapStateToProps = (state, ownProps) => ({
+  ownEvents: state.events.ownEvents
+})
+
 const mapDispatchToProps = (dispatch) => ({
   beginCheckin: (eventData) => {
     dispatch(beginCheckin(eventData))

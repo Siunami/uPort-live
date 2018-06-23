@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import DatePicker from 'react-datepicker'
+import { connect } from 'react-redux'
 import EthrDID from 'ethr-did'
 import moment from 'moment'
 
+import { createEvent } from './createActions'
 import { uport, web3 } from '../../util/connectors'
 
 import 'react-datepicker/dist/react-datepicker.css';
+
 
 /**
  * @classdesc
@@ -48,32 +51,34 @@ class EventCreator extends Component {
    */
   handleSubmit(event) {
     event.preventDefault();
-
-    const {address} = this.props.authData
+    const {authData, createEvent} = this.props
     const {name, location, startDate, endDate, about} = this.state
 
     // Create a keypair for the event
     const keypair = EthrDID.createKeyPair()
+    const did = new EthrDID({...keypair, provider: web3})
 
-    // TODO: Replace with a call to a lambda function which will do the signing
-    //       there may also be some csrf protection we need to do on that as well (?)
+    // Individual fields are taken from http://schema.org/Event 
+    // and described further in schemas.md
+    const eventDetails = {
+      identifier: keypair,
+      organizer: authData.address,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      name, location, about
+    }
+
+    // TODO: Confirm all fields have been filled out
     uport.attestCredentials({
-      sub: address,
+      sub: authData.address,
       claim: {
-        // Single key in claim is required for standardizing event ownership credentials
-        uportLiveEvent: {
-          // Individual fields are taken from http://schema.org/Event 
-          // and described further in schemas.md
-          identifier: keypair,
-          organizer: address,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-          name, location, about
-        }
+        UPORT_LIVE_EVENT: eventDetails
       }
-    }).then(() => 
-      browserHistory.push('/dashboard')
-    )
+    }).then(() => {
+      console.log(eventDetails)
+      createEvent(eventDetails)
+      browserHistory.push('/dashboard');
+    })
   }
 
   /**
@@ -113,10 +118,10 @@ class EventCreator extends Component {
               <div className="fields">
                 <label>Event Dates</label>
                 <div className="field">
-                  <DatePicker selected={startDate} onChange={updateStartDate}/>
+                  <DatePicker selected={startDate} onChange={updateStartDate} />
                 </div>
                 <div className="field">
-                  <DatePicker selected={endDate} onChange={updateEndDate}/>
+                  <DatePicker selected={endDate} onChange={updateEndDate} />
                 </div>
               </div>
             </div>
@@ -128,4 +133,14 @@ class EventCreator extends Component {
   }
 }
 
-export default EventCreator
+// Connect to redux store
+const mapStateToProps = (state, ownProps) => ({})
+
+const mapDispatchToProps = dispatch => ({
+    createEvent: eventData => dispatch(createEvent(eventData))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventCreator)
