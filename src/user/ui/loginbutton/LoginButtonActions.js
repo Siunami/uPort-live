@@ -1,19 +1,23 @@
 import { uport } from './../../../util/connectors.js'
 import { browserHistory } from 'react-router'
 
+/**
+ * @note: This little bit is kind of hacky, but I'm still trying to
+ *        think of a better way to straddle the events branch and the
+ *        user branch of the state tree.  Ideally this would live somewhere
+ *        else and then combine in a more elegant way, but since there are
+ *        multiple components that use the loginUser() function this is
+ *        the only immediately evident way to sneak them both in one
+ *        not the worst i guess?
+ */
+import { createEvent } from '../../../layouts/create/createActions.js'
+
+
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 function userLoggedIn(user) {
   return {
     type: USER_LOGGED_IN,
     payload: user
-  }
-}
-
-export const GET_ATTESTATIONS = 'GET_ATTESTATIONS'
-function getAttestations(attestations) {
-  return {
-    type: GET_ATTESTATIONS,
-    payload: attestations
   }
 }
 
@@ -28,14 +32,14 @@ export function loginUser() {
       notifications: true
     }).then((credentials) => {
       dispatch(userLoggedIn(credentials))
-      var attestations = [];
-      for (var i = 0; i < credentials.verified.length; i++) {
-        attestations.push(credentials.verified[i].claim.UPORT_LIVE_EVENT);
-      }
-      dispatch(getAttestations(attestations));
+
+      // HERE WE HACK OUT MOVING ATTESTATIONS TO THE RIGHT BRANCH
+      const attestations = credentials.verified.map(({claim}) => claim.UPORT_LIVE_EVENT)
+      dispatch(createEvent(attestations));
+
       // Used a manual redirect here as opposed to a wrapper.
       // This way, once logged in a user can still access the home page.
-      var currentLocation = browserHistory.getCurrentLocation()
+      const currentLocation = browserHistory.getCurrentLocation()
 
       if ('redirect' in currentLocation.query)
       {

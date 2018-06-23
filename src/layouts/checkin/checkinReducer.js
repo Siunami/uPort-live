@@ -1,7 +1,7 @@
 import {BEGIN_CHECKIN_FLOW, END_CHECKIN_FLOW} from './checkinActions'
 
 // The current event is null by default
-const initialState = {eventData: null}
+const initialState = null
 
 /**
  * Handle the beginning and end of the event checkin flow
@@ -9,11 +9,12 @@ const initialState = {eventData: null}
  * of the state tree, and END_CHECKIN_FLOW clears it.
  */
 const checkinReducer = (state = initialState, action) => {
+	console.log('In checkin reducer')
+	console.log(action)
+
 	switch (action.type) {
 		case BEGIN_CHECKIN_FLOW:
-			return Object.assign({}, state, {
-				eventData: action.payload
-			})
+			return Object.assign({}, action.payload)
 		case END_CHECKIN_FLOW:
 			return initialState
 		default:
@@ -22,9 +23,3 @@ const checkinReducer = (state = initialState, action) => {
 }
 
 export default checkinReducer
-
-
-/**
- * Selector for the event data
- */
-export const selectCheckinEvent = state => state.checkin.eventData

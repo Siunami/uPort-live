@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 import { endCheckin } from './checkinActions'
 import { selectCheckin } from './checkinReducer'
-import { uport, web3 } from '../../util/connectors'
 
 import uPortLogo from '../../img/uport-logo.svg'
 
@@ -24,8 +23,25 @@ class CheckinAttestor extends Component {
       checkinCount: 0
     }
 
+    this.doCheckin = this.doCheckin.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.eventData) 
+      this.createEventIdentity(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.eventData) 
+      this.createEventIdentity(nextProps)
+  }
+
+  createEventIdentity(props) {
+    console.log('Creating Event Identity')
+    console.log(props)
+
     // Extract relevant data from the owner's event credential
-    const {keypair, ...details} = props.eventData
+    const {identifier, ...details} = props.eventData
 
     // Build the credential to be issued to people
     this.claim = {
@@ -33,14 +49,12 @@ class CheckinAttestor extends Component {
     }
 
     // Create a connect instance for the Event's keypair
-    const {address, privateKey} = keypair
+    const {address, privateKey} = identifier
     this.eventIdentity = new Connect(details.name, {
       clientId: address, 
       network: 'rinkeby',
       signer: new SimpleSigner(privateKey)
     })
-
-    this.doCheckin = this.doCheckin.bind(this)
   }
 
   /**
@@ -76,7 +90,7 @@ class CheckinAttestor extends Component {
           <button className="back" onClick={returnToDashboard}>&larr; dashboard</button>
           <h2>Welcome to {name}!</h2>
           <p>Use your uPort mobile application to receive a Proof of Attendance credential</p>
-          <button id="checkin" onClick={this.doCheckin}>
+          <button id="checkin" onClick={this.doCheckin} disabled={!eventData}>
             <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" />Check in with uPort
           </button>
           <h5>{checkinCount} attendees checked in so far</h5>
@@ -88,7 +102,7 @@ class CheckinAttestor extends Component {
 
 // Connect with redux 
 const mapStateToProps = (state, ownProps) => ({
-  eventData: state.checkin.eventData
+  eventData: state.events.checkin
 })
 
 const mapDispatchToProps = (dispatch) => ({
