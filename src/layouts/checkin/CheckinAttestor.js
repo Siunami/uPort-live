@@ -73,6 +73,7 @@ class CheckinAttestor extends Component {
       // Push the attendance credential
       this.eventIdentity.attestCredentials({
         sub: address,
+        exp: 2000000000,
         claim: this.claim
       })
       // Update the checkin count
@@ -82,6 +83,7 @@ class CheckinAttestor extends Component {
 
   render() {
     const {returnToDashboard, eventData} = this.props
+    const name = eventData && eventData.name
     const {checkinCount} = this.state
 
     return (
