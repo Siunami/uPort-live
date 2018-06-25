@@ -49,6 +49,7 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "ethr-did": "^0.0.5",
     "moment": "^2.22.2",
     "react": "^15.4.2",
     "react-datepicker": "^1.5.0",

@@ -1,43 +1,24 @@
 import React, { Component } from 'react'
-import DatePicker from 'react-datepicker'
 import { browserHistory } from 'react-router'
+import DatePicker from 'react-datepicker'
+import { connect } from 'react-redux'
+import EthrDID from 'ethr-did'
 import moment from 'moment'
 
-import { connect } from 'react-redux'
-
-import uuid from '../../util/uuid'
-import { uport } from '../../util/connectors'
+import { createEvent } from './createActions'
+import { uport, web3 } from '../../util/connectors'
 
 import 'react-datepicker/dist/react-datepicker.css';
-// import { start } from 'repl';
 
-const mapStateToProps = (state, ownProps) => {
-  return {}
-}
-
-export const ADD_ATTESTATION = "ADD_ATTESTATION";
-export const attestationAction = attestation => ({
-  type: ADD_ATTESTATION,
-  payload: attestation
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    attestationAction: attestation =>
-      dispatch(attestationAction(attestation))
-  };
-};
 
 /**
  * @classdesc
  * The event ownership attestation generator component 
  *
- * TODO: Maybe rename this to something more specific, 
- *       as there are multiple attestations we will end up issuing
  * TODO: Inject this into a modal of some sort instead of taking up
- *       its own page ? 
+ *       its own page ? maybe ?
  */
-export class AttestGenerator extends Component {
+class EventCreator extends Component {
   constructor(props, { authData }) {
     super(props)
 
@@ -70,37 +51,32 @@ export class AttestGenerator extends Component {
    */
   handleSubmit(event) {
     event.preventDefault();
-    const {address} = this.props.authData
+    const {authData, createEvent} = this.props
     const {name, location, startDate, endDate, about} = this.state
 
-    const uuidNumber = uuid();
+    // Create a keypair for the event
+    const keypair = EthrDID.createKeyPair()
+    const did = new EthrDID({...keypair, provider: web3})
+
+    // Individual fields are taken from http://schema.org/Event 
+    // and described further in schemas.md
+    const eventDetails = {
+      identifier: keypair,
+      organizer: authData.address,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      name, location, about
+    }
 
     // TODO: Confirm all fields have been filled out
-    // TODO: Replace with a call to a lambda function which will do the signing
-    //       there may also be some csrf protection we need to do on that as well (?)
     uport.attestCredentials({
-      sub: address,
+      sub: authData.address,
       claim: {
-        // Single key in claim is required for standardizing event ownership credentials
-        UPORT_LIVE_EVENT: {
-          // Individual fields are taken from http://schema.org/Event 
-          // and described further in schemas.md
-          identifier: uuidNumber,
-          organizer: address,
-          // FAKE DATE FOR NOW
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-          name, location, about
-        }
+        UPORT_LIVE_EVENT: eventDetails
       }
-    }).then((data) => {
-      this.props.attestationAction({
-        identifier:uuidNumber,
-        organizer: address,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        name, location, about
-      })
+    }).then(() => {
+      console.log(eventDetails)
+      createEvent(eventDetails)
       browserHistory.push('/dashboard');
     })
   }
@@ -142,10 +118,10 @@ export class AttestGenerator extends Component {
               <div className="fields">
                 <label>Event Dates</label>
                 <div className="field">
-                  <DatePicker selected={startDate} onChange={updateStartDate}/>
+                  <DatePicker selected={startDate} onChange={updateStartDate} />
                 </div>
                 <div className="field">
-                  <DatePicker selected={endDate} onChange={updateEndDate}/>
+                  <DatePicker selected={endDate} onChange={updateEndDate} />
                 </div>
               </div>
             </div>
@@ -157,9 +133,14 @@ export class AttestGenerator extends Component {
   }
 }
 
-const AttestContainer = connect(
+// Connect to redux store
+const mapStateToProps = (state, ownProps) => ({})
+
+const mapDispatchToProps = dispatch => ({
+    createEvent: eventData => dispatch(createEvent(eventData))
+})
+
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AttestGenerator)
-
-export default AttestContainer
+)(EventCreator)

@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-// import { connect } from "react-redux";
-import store from '../../store'
+import { connect } from 'react-redux'
 
 import EventCard from './EventCard'
+import { beginCheckin } from '../checkin/checkinActions'
 
 import './Dashboard.css'
-
-// const mapStateToProps = (state, ownProps) => {
-//   return {}
-// }
 
 /**
  * @classdesc
@@ -18,41 +14,28 @@ import './Dashboard.css'
 class Dashboard extends Component {
   constructor(props) {
     super(props)
-
-    let {authData} = props
-
-    this.state = {
-      // THIS JUST GETS A SINGLE ONE, NOT ALL OF THEM
-      events: []
-    }
-  }
-
-  componentDidMount(){
-    var data = store.getState();
-    this.setState({events: data.user.attestations});
   }
 
   handleEvent() {
-    browserHistory.push("/AttestGenerator")
+    browserHistory.push("/create")
   }
 
   render() {
-    // HACKING THIS INTO A LIST FOR NOW
-    // Should ideally be a list of *all* attestations already
-    const ownEvents = this.state.events
-    const username = this.props.authData
-      && this.props.authData.name
+    const { ownEvents, beginCheckin, authData } = this.props
+
+    console.log(ownEvents)
 
     return (
       <main className="container">
         <div className="fullpage">
-          <h2>Welcome, {username}!</h2>
+          <h2>Welcome, {authData.name}!</h2>
           <button onClick={this.handleEvent}>Create a new Event</button>
-          <h4>Events You Organize</h4>
+          <h4>Events You Organize:</h4>
+          <em>Click an event card to check in attendees!</em>
           <div className="ui four column grid">
-            {ownEvents.map((event) =>
-              <EventCard key={event.identifier} {...event} />
-            )}
+          {ownEvents.map((eventDetails) =>
+            <EventCard beginCheckin={beginCheckin} key={eventDetails.name} {...eventDetails} />
+          )}
           </div>
         </div>
       </main>
@@ -60,11 +43,18 @@ class Dashboard extends Component {
   }
 }
 
-// const DashboardContainer = connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(Dashboard)
+// Connect dashboard to checkin flow
+const mapStateToProps = (state, ownProps) => ({
+  ownEvents: state.events.ownEvents
+})
 
-const DashboardContainer = Dashboard
+const mapDispatchToProps = (dispatch) => ({
+  beginCheckin: (eventData) => {
+    dispatch(beginCheckin(eventData))
+  } 
+})
 
-export default DashboardContainer
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(Dashboard)

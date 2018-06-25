@@ -8,9 +8,10 @@ import { UserIsAuthenticated } from './util/wrappers.js'
 // Layouts
 import App from './App'
 import Home from './layouts/home/Home'
-import DashboardContainer from './layouts/dashboard/Dashboard'
-import AttestContainer from './layouts/AttestGenerator/AttestGenerator'
 import Profile from './user/layouts/profile/Profile'
+import Dashboard from './layouts/dashboard/Dashboard'
+import EventCreator from './layouts/create/EventCreator'
+import CheckinAttestor from './layouts/checkin/CheckinAttestor'
 
 // Redux Store
 import store from './store'
@@ -22,10 +23,10 @@ ReactDOM.render((
       <Router history={history}>
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
-          {/* <Route path="/" component={Home}/> */}
-          <Route path="dashboard" component={UserIsAuthenticated(DashboardContainer)} />
+          <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
-          <Route path="attestGenerator" component={UserIsAuthenticated(AttestContainer)} />
+          <Route path="create" component={UserIsAuthenticated(EventCreator)} />
+          <Route path="checkin" component={UserIsAuthenticated(CheckinAttestor)} />
         </Route>
       </Router>
     </Provider>

@@ -10,14 +10,17 @@ import moment from 'moment'
  *       clicked event
  */
 export default class EventCard extends Component {
-
-  handleEvent(){
-    alert("hi");
-  }
-
 	render() {
-    const {name, startDate, location, about} = this.props
+    const {beginCheckin, ...eventData} = this.props
     
+    // Build the function to launch the checkin flow for this particular event
+    const checkin = (event) => {
+      event.preventDefault()
+      beginCheckin(eventData)
+    }
+
+    // Extract event data for display
+    const {name, location, about, startDate} = eventData
     const date = moment(startDate).format('MMM D, YYYY')
 
 		return (
@@ -32,17 +35,9 @@ export default class EventCard extends Component {
               <p><b>About</b>: {about}</p>
             </div>
           </div>
-          <div className="ui bottom attached button" onClick={this.handleEvent}>
-            <i className="add icon"></i>
-            Add Friend
+          <div className="ui bottom attached button" onClick={checkin}>
+            <i className="add icon"></i>Check in
           </div>
-
-          {/* <div className="extra content">
-            <span className="right floated star">
-              <i className="trash icon">
-              </i>
-            </span>
-          </div> */}
         </div>
       </div>
 		)
