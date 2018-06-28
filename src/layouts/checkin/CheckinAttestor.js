@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // Watch out, we got two different things called connect
-import { Connect, SimpleSigner } from 'uport-connect'
+import { Connect, SimpleSigner, Credentials } from 'uport-connect'
 import { connect } from 'react-redux'
 
 import { endCheckin } from './checkinActions'
@@ -46,15 +46,12 @@ class CheckinAttestor extends Component {
     }
 
     // Create a connect instance for the Event's keypair
-    const {address, privateKey} = identifier
-    this.eventIdentity = new Connect(details.name, {
-      clientId: address, 
-      network: 'rinkeby',
-      signer: new SimpleSigner(privateKey)
-    })
+    const {did, privateKey} = identifier
+    const signer = new SimpleSigner(privateKey)
 
-    console.log('Connect object for event identity:')
-    console.log(this.eventIdentity)
+    this.eventIdentity = new Connect(details.name, {
+      credentials: new Credentials({did, signer})
+    })
   }
 
   /**
@@ -68,7 +65,7 @@ class CheckinAttestor extends Component {
     // EVENT's identity
     this.eventIdentity.requestCredentials({
       requested: ['address', 'name'],
-      notifications: true
+      // notifications: true
     }).then(({address}) => {
       // Push the attendance credential
       this.eventIdentity.attestCredentials({

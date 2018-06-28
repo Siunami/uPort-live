@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import DatePicker from 'react-datepicker'
 import { connect } from 'react-redux'
-import EthrDID from 'ethr-did'
+import { Credentials } from 'uport'
 import moment from 'moment'
 
 import { createEvent } from './createActions'
@@ -54,14 +54,14 @@ class EventCreator extends Component {
     const {authData, createEvent} = this.props
     const {name, location, startDate, endDate, about} = this.state
 
-    // Create a keypair for the event
-    const keypair = EthrDID.createKeyPair()
-    const did = new EthrDID({...keypair, provider: web3})
+    // Create a did keypair for the event
+    // identifier = {did, privateKey}
+    const identifier = Credentials.createIdentity()
 
     // Individual fields are taken from http://schema.org/Event 
     // and described further in schemas.md
     const eventDetails = {
-      identifier: keypair,
+      identifier,
       organizer: authData.address,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
