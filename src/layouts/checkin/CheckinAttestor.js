@@ -37,9 +37,6 @@ class CheckinAttestor extends Component {
   }
 
   createEventIdentity(props) {
-    console.log('Creating Event Identity')
-    console.log(props)
-
     // Extract relevant data from the owner's event credential
     const {identifier, ...details} = props.eventData
 
@@ -55,6 +52,9 @@ class CheckinAttestor extends Component {
       network: 'rinkeby',
       signer: new SimpleSigner(privateKey)
     })
+
+    console.log('Connect object for event identity:')
+    console.log(this.eventIdentity)
   }
 
   /**
@@ -77,7 +77,7 @@ class CheckinAttestor extends Component {
         claim: this.claim
       })
       // Update the checkin count
-      this.setState({checkinCount})
+      this.setState({checkinCount: checkinCount + 1})
     })
   }
 

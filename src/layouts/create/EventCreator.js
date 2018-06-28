@@ -75,7 +75,6 @@ class EventCreator extends Component {
         UPORT_LIVE_EVENT: eventDetails
       }
     }).then(() => {
-      console.log(eventDetails)
       createEvent(eventDetails)
       browserHistory.push('/dashboard');
     })
