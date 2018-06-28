@@ -29,7 +29,7 @@ export function loginUser() {
       requested: ['name', 'avatar', 'phone', 'country'],
       // This is where we request the uPort Live Events
       verified: ['UPORT_LIVE_EVENT'],
-      notifications: true
+      // notifications: true
     }).then((credentials) => {
       dispatch(userLoggedIn(credentials))
 
