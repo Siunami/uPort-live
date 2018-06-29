@@ -2,6 +2,16 @@
 
 ## Copy Text
 * Overview and copy text for home page
+    * What is uport live (short)
+        * Answer the "Why?" question fo event organizers
+    * How to get started
+        * Login
+        * Create event credential
+        * Attendee Issuance view
+    * Contribute
+        * For those interested in contributing, check out our issues on github or fork the project and make it your own!
+    * Team ??
+        * Photo + short desc
 
 ## Development
 * Sort events by date
