@@ -11,7 +11,10 @@
     * Contribute
         * For those interested in contributing, check out our issues on github or fork the project and make it your own!
     * Team ??
-        * Photo + short desc
+        * uport members
+            * Photo + short desc
+        * contributors
+            * Photo + short desc
 
 ## Development
 * Sort events by date
