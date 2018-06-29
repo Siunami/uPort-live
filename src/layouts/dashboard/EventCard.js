@@ -13,7 +13,6 @@ export default class EventCard extends Component {
 	render() {
     const {beginCheckin, ...eventData} = this.props
     
-    console.log(this.props)
     // Build the function to launch the checkin flow for this particular event
     const checkin = (event) => {
       event.preventDefault()
