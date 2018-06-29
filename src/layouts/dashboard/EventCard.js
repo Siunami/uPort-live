@@ -23,6 +23,10 @@ export default class EventCard extends Component {
     const {name, location, about, startDate} = eventData
     const date = moment(startDate).format('MMM D, YYYY')
 
+    let checkinButton
+    if (eventData.currentEvent)
+      checkinButton = <div className="ui bottom attached button" onClick={checkin}><i className="add icon"></i>Check in</div>
+
 		return (
       <div className="column">
         <div className="ui card">
@@ -35,9 +39,7 @@ export default class EventCard extends Component {
               <p><b>About</b>: {about}</p>
             </div>
           </div>
-          <div className="ui bottom attached button" onClick={checkin}>
-            <i className="add icon"></i>Check in
-          </div>
+          {checkinButton}
         </div>
       </div>
 		)
