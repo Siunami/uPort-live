@@ -20,6 +20,7 @@
 * Sort events by date
 * Events cannot be created in the past (check data in generator)
 * Make Routing more intuitive
+* Validate form date is not in the past/fields filled out
 
 ## UI Cleanup
 * Dashboard
