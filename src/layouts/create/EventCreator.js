@@ -124,7 +124,7 @@ class EventCreator extends Component {
                 </div>
               </div>
             </div>
-            <input type="submit" value="Create!" />
+            <input className="ui button" type="submit" value="Create!" />
           </form>
         </div>
       </main>

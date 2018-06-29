@@ -86,10 +86,15 @@ class CheckinAttestor extends Component {
     return (
       <main className="container">
         <div className="fullpage">
-          <button className="back" onClick={returnToDashboard}>&larr; dashboard</button>
+        <div className="ui animated button" onClick={returnToDashboard} tabindex="0">
+            <div className="visible content">Back</div>
+            <div className="hidden content">
+              <i className="left arrow icon"></i>
+            </div>
+          </div>
           <h2>Welcome to {name}!</h2>
           <p>Use your uPort mobile application to receive a Proof of Attendance credential</p>
-          <button id="checkin" onClick={this.doCheckin} disabled={!eventData}>
+          <button className="ui button" id="checkin" onClick={this.doCheckin} disabled={!eventData}>
             <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" />Check in with uPort
           </button>
           <h5>{checkinCount} attendees checked in so far</h5>
