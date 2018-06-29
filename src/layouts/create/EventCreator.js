@@ -11,6 +11,8 @@ import { uport, web3 } from '../../util/connectors'
 import 'react-datepicker/dist/react-datepicker.css';
 
 
+const NUM_FIELDS = 5
+
 /**
  * @classdesc
  * The event ownership attestation generator component 
@@ -44,7 +46,11 @@ class EventCreator extends Component {
   }
 
   checkFields(){
-    return true
+    const keys = Object.keys(this.state)
+    if (keys.length == NUM_FIELDS)
+      return true
+    else
+      return false
   }
 
   /**
@@ -58,30 +64,34 @@ class EventCreator extends Component {
     const {authData, createEvent} = this.props
     const {name, location, startDate, endDate, about} = this.state
 
-    // Create a did keypair for the event
-    // identifier = {did, privateKey}
-    const identifier = Credentials.createIdentity()
+    if (this.checkFields()){
+      // Create a did keypair for the event
+      // identifier = {did, privateKey}
+      const identifier = Credentials.createIdentity()
 
-    // Individual fields are taken from http://schema.org/Event 
-    // and described further in schemas.md
-    const eventDetails = {
-      identifier,
-      organizer: authData.address,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
-      name, location, about
-    }
-
-    // TODO: Confirm all fields have been filled out
-    uport.attestCredentials({
-      sub: authData.address,
-      claim: {
-        UPORT_LIVE_EVENT: eventDetails
+      // Individual fields are taken from http://schema.org/Event 
+      // and described further in schemas.md
+      const eventDetails = {
+        identifier,
+        organizer: authData.address,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        name, location, about
       }
-    }).then(() => {
-      createEvent(eventDetails)
-      browserHistory.push('/dashboard');
-    })
+
+      // TODO: Confirm all fields have been filled out
+      uport.attestCredentials({
+        sub: authData.address,
+        claim: {
+          UPORT_LIVE_EVENT: eventDetails
+        }
+      }).then(() => {
+        createEvent(eventDetails)
+        browserHistory.push('/dashboard')
+      })
+    } else {
+      alert("Fill out all fields first")
+    }
   }
 
   /**
@@ -95,21 +105,15 @@ class EventCreator extends Component {
     const currDate = moment()
 
     const updateStartDate = (startDate) => {
-      if (startDate >= currDate)
+      if (startDate >= currDate) {
         this.setState({startDate})
-        if (startDate > this.state.endDate){
+        if (startDate > this.state.endDate)
           this.setState({endDate:startDate})
-        }
-      else {
-        document.getElementById("startDate").value = this.state.startDate
       }
     }
     const updateEndDate = (endDate) => {
       if (endDate >= this.state.startDate)
         this.setState({endDate})
-      else {
-        document.getElementById("endDate").value = this.state.endDate
-      }
     }
 
     return (
