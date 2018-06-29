@@ -13,6 +13,7 @@ export default class EventCard extends Component {
 	render() {
     const {beginCheckin, ...eventData} = this.props
     
+    console.log(this.props)
     // Build the function to launch the checkin flow for this particular event
     const checkin = (event) => {
       event.preventDefault()
@@ -22,6 +23,10 @@ export default class EventCard extends Component {
     // Extract event data for display
     const {name, location, about, startDate} = eventData
     const date = moment(startDate).format('MMM D, YYYY')
+
+    let checkinButton
+    if (eventData.currentEvent)
+      checkinButton = <div className="ui bottom attached button" onClick={checkin}><i className="add icon"></i>Check in</div>
 
 		return (
       <div className="column">
@@ -35,9 +40,7 @@ export default class EventCard extends Component {
               <p><b>About</b>: {about}</p>
             </div>
           </div>
-          <div className="ui bottom attached button" onClick={checkin}>
-            <i className="add icon"></i>Check in
-          </div>
+          {checkinButton}
         </div>
       </div>
 		)

@@ -3,7 +3,6 @@ import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 
 import EventCard from './EventCard'
-import EventCardOld from './EventCardOld'
 import { beginCheckin } from '../checkin/checkinActions'
 
 import moment from 'moment'
@@ -62,13 +61,13 @@ class Dashboard extends Component {
           <h3> Events </h3>
           <div className="ui four column grid">
           {sortedEvents[0].map((eventDetails) =>
-            <EventCard beginCheckin={beginCheckin} key={eventDetails.name} {...eventDetails} />
+            <EventCard beginCheckin={beginCheckin} currentEvent={true} key={eventDetails.name} {...eventDetails} />
           )}
           </div>
           <h3> Past Events</h3>
           <div className="ui four column grid">
           {sortedEvents[1].map((eventDetails) =>
-            <EventCardOld beginCheckin={beginCheckin} key={eventDetails.name} {...eventDetails} />
+            <EventCard beginCheckin={beginCheckin} currentEvent={false} key={eventDetails.name} {...eventDetails} />
           )}
           </div>
         </div>

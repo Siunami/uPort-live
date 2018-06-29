@@ -86,7 +86,7 @@ class CheckinAttestor extends Component {
     return (
       <main className="container">
         <div className="fullpage">
-        <div className="ui animated button" onClick={returnToDashboard} tabindex="0">
+        <div className="ui animated button" onClick={returnToDashboard} tabIndex="0">
             <div className="visible content">Back</div>
             <div className="hidden content">
               <i className="left arrow icon"></i>
