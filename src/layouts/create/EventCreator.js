@@ -43,6 +43,10 @@ class EventCreator extends Component {
     this.setState({[name]: value})
   }
 
+  checkFields(){
+    return true
+  }
+
   /**
    * Issue an event ownership credential, indicating the creation of an event.
    * The fields of the event ownership credential are populated by the controlled fields
@@ -88,8 +92,25 @@ class EventCreator extends Component {
   render() {
     const {name, location, startDate, endDate, about} = this.state
 
-    const updateStartDate = (startDate) => this.setState({startDate})
-    const updateEndDate = (endDate) => this.setState({endDate})
+    const currDate = moment()
+
+    const updateStartDate = (startDate) => {
+      if (startDate >= currDate)
+        this.setState({startDate})
+        if (startDate > this.state.endDate){
+          this.setState({endDate:startDate})
+        }
+      else {
+        document.getElementById("startDate").value = this.state.startDate
+      }
+    }
+    const updateEndDate = (endDate) => {
+      if (endDate >= this.state.startDate)
+        this.setState({endDate})
+      else {
+        document.getElementById("endDate").value = this.state.endDate
+      }
+    }
 
     return (
       <main className="container">
@@ -117,10 +138,10 @@ class EventCreator extends Component {
               <div className="fields">
                 <label>Event Dates</label>
                 <div className="field">
-                  <DatePicker selected={startDate} onChange={updateStartDate} />
+                  <DatePicker id="startDate" selected={startDate} onChange={updateStartDate} />
                 </div>
                 <div className="field">
-                  <DatePicker selected={endDate} onChange={updateEndDate} />
+                  <DatePicker id="endDate" selected={endDate} onChange={updateEndDate} />
                 </div>
               </div>
             </div>
