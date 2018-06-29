@@ -142,10 +142,10 @@ class EventCreator extends Component {
               <div className="fields">
                 <label>Event Dates</label>
                 <div className="field">
-                  <DatePicker id="startDate" selected={startDate} onChange={updateStartDate} />
+                  <DatePicker selected={startDate} onChange={updateStartDate} />
                 </div>
                 <div className="field">
-                  <DatePicker id="endDate" selected={endDate} onChange={updateEndDate} />
+                  <DatePicker selected={endDate} onChange={updateEndDate} />
                 </div>
               </div>
             </div>
