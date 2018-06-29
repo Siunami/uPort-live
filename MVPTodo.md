@@ -17,7 +17,7 @@
             * Photo + short desc
 
 ## Development
-* Sort events by date
+* Sort events by date (Done)
 * Events cannot be created in the past (check data in generator)
 * Make Routing more intuitive
 
