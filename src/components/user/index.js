@@ -7,10 +7,8 @@ import { logoutUser } from './logout/actions'
 
 import userReducer from './reducer'
 
-console.log('user/index:')
-console.log(LoginButton)
-
 /** Export Comopnents */
-export { Profile, LoginButton, LogoutButton, loginUser, logoutUser, userReducer}
+export { Profile, LoginButton, LogoutButton }
 
 /** Export actions and reducer */
+export { loginUser, logoutUser, userReducer }

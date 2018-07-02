@@ -3,9 +3,6 @@ import React, { Component } from 'react'
 import { LoginButton } from '../user'
 import uPortLogo from '../../img/uport-logo.svg'
 
-console.log('home/Home')
-console.log(LoginButton)
-
 class Home extends Component {
   render() {
     return (

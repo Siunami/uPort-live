@@ -13,10 +13,6 @@ import './EventDashboard.css'
  * This component will display all of a user's own events
  */
 class Dashboard extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   handleEvent() {
     browserHistory.push("/create")
   }
@@ -39,12 +35,12 @@ class Dashboard extends Component {
       else
         pastEvents.push(events[i])
     }
-    return [this.sortByKey(currEvents),this.sortByKey(pastEvents)]
+    return [this.sortByKey(currEvents), this.sortByKey(pastEvents)]
   }
 
   render() {
     const { ownEvents, beginCheckin, authData } = this.props
-    const sortedEvents = this.sortEvents(ownEvents)
+    const [ activeEvents, oldEvents ] = this.sortEvents(ownEvents)
     
     return (
       <main className="container">
@@ -55,14 +51,14 @@ class Dashboard extends Component {
           <h3> Active Events </h3>
           <em>Click an event card to check in attendees!</em>
           <div className="ui four column grid">
-          {sortedEvents[0].map((eventDetails) =>
+          {activeEvents.map((eventDetails) =>
             <EventCard beginCheckin={beginCheckin} currentEvent={true} key={eventDetails.name} {...eventDetails} />
           )}
           </div>
 
           <h3> Past Events</h3>
           <div className="ui four column grid">
-          {sortedEvents[1].map((eventDetails) =>
+          {oldEvents.map((eventDetails) =>
             <EventCard beginCheckin={beginCheckin} currentEvent={false} key={eventDetails.name} {...eventDetails} />
           )}
           </div>

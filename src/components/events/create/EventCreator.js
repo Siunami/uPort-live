@@ -11,7 +11,6 @@ import { uport } from '../../../util/connectors'
 import './EventCreator.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
-
 /**
  * @classdesc
  * The event ownership attestation generator component 
@@ -29,7 +28,7 @@ class EventCreator extends Component {
         name: null,
         location: null,
         about: null
-      }
+      },
       startDate: moment(),
       endDate: moment()
     }
@@ -47,18 +46,24 @@ class EventCreator extends Component {
   handleFieldChange(event) {
     const {name, value} = event.target
     this.setState({[name]: value})
+
+    // Remove the error text
+    if (!!this.state.errors[name] && value !== '') {
+      const errors = Object.assign({}, this.state.errors, {[name]: null})
+      this.setState({errors})
+    }
   }
 
   /**
    * Individually validate each field
    */
   checkFields() {
-    const isValid = true
+    let isValid = true
     const errors = Object.assign({}, this.state.errors)
 
-    for (const field of errors) {
+    for (const field in errors) {
       // Add any more specific validation checks here
-      if (this.state[field] === '') {
+      if (!this.state[field]) {
         errors[field] = `Please enter a value for ${field}`
         isValid = false
       }
