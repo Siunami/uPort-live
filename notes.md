@@ -4,6 +4,18 @@ This is just a document for keeping track of random thoughts during the developm
 
 In particular, I'm creating this while on an 8 hour flight with no internet, so without github issues, this is the next best thing, and hey it might come in handy even when the internet comes back !
 
+## 6/29/18 Rob
+- Reorganized components into a slightly more sane structure, hopefully this will save headaches down the road/will be more easy to understand.
+- TODO: Better handling for redirects and landing page stuff
+	- Need to gracefully redirect if someone goes to `/checkin` without clicking on an event
+	- Need to throw up a spinner or some other blocking animation between login and dashboard
+		- Maybe something similar for new events, and checkin
+	- Better definition for the checkin flow, i.e. make it more clear that there are two steps, maybe put the login button on the page to save a click?
+		- Also maybe show some stylized version of the attestation on the side of the checkin page?
+- Homepage for logged in users should be different than not logged in
+	- Probably dashboard for logged in (?)
+	- Some sort of about/landing page otherwise?
+
 ## 6/22/18 Rob
 - Biggest change of last two days: scrap the lambda functions, uport-live itself will no longer be the signer for event attendance attestations.  It will issue event ownership credentials, but the fact of the app issuing these is pretty inconsequential as they now contain a keypair using the ethr-did library!  So the keypair is stored inside the ownership credential, and then in the checkin flow, it is the *event* that does the signing.
 	- In an ideal world, the user would make the event a signing delegate or something similar, but until all of that functionality is ready, we can just use this event-as-identity hack.  The checkin flow is then a new instance of `Connect`, which requests credentials from the checking-in user, and then pushes them an attendance verification
