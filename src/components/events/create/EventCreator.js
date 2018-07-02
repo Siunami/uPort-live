@@ -8,7 +8,9 @@ import moment from 'moment'
 import { createEvent } from './actions'
 import { uport } from '../../../util/connectors'
 
-import 'react-datepicker/dist/react-datepicker.css';
+import './EventCreator.css'
+import 'react-datepicker/dist/react-datepicker.css'
+
 
 /**
  * @classdesc
@@ -23,6 +25,11 @@ class EventCreator extends Component {
 
     authData = this.props
     this.state = {
+      errors: {
+        name: null,
+        location: null,
+        about: null
+      }
       startDate: moment(),
       endDate: moment()
     }
@@ -43,6 +50,25 @@ class EventCreator extends Component {
   }
 
   /**
+   * Individually validate each field
+   */
+  checkFields() {
+    const isValid = true
+    const errors = Object.assign({}, this.state.errors)
+
+    for (const field of errors) {
+      // Add any more specific validation checks here
+      if (this.state[field] === '') {
+        errors[field] = `Please enter a value for ${field}`
+        isValid = false
+      }
+    }
+
+    this.setState({errors})
+    return isValid
+  }
+
+  /**
    * Issue an event ownership credential, indicating the creation of an event.
    * The fields of the event ownership credential are populated by the controlled fields
    * of the input form
@@ -52,6 +78,11 @@ class EventCreator extends Component {
     event.preventDefault();
     const {authData, createEvent} = this.props
     const {name, location, startDate, endDate, about} = this.state
+
+    // Return early if invalid
+    if (!this.checkFields()) {
+      return
+    }
 
     // Create a did keypair for the event
     // identifier = {did, privateKey}
@@ -75,7 +106,7 @@ class EventCreator extends Component {
       }
     }).then(() => {
       createEvent(eventDetails)
-      browserHistory.push('/dashboard');
+      browserHistory.push('/dashboard')
     })
   }
 
@@ -85,10 +116,25 @@ class EventCreator extends Component {
    * with the scanning of a QR code
    */
   render() {
-    const {name, location, startDate, endDate, about} = this.state
+    const {name, location, startDate, endDate, about, errors} = this.state
 
-    const updateStartDate = (startDate) => this.setState({startDate})
-    const updateEndDate = (endDate) => this.setState({endDate})
+    // Set threshold to midnight
+    const today = moment().startOf('day')
+
+    // Self-validating update functions for start/end date
+    const updateStartDate = (startDate) => {
+      // TODO: maybe allow this anyway?
+      if (startDate >= today) {
+        this.setState({startDate})
+        if (startDate > this.state.endDate)
+          this.setState({endDate: startDate})
+      }
+    }
+
+    const updateEndDate = (endDate) => {
+      if (endDate >= this.state.startDate)
+        this.setState({endDate})
+    }
 
     return (
       <main className="container">
@@ -99,19 +145,21 @@ class EventCreator extends Component {
             <div className="field">
               <label>Event Name</label>
               <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
+              <span className="error">{errors.name}</span>
+            </div>
+
+            <div className="field">
+              <label>Event Location</label>
+              <input type="text" name="location" value={location} onChange={this.handleFieldChange} placeholder="Event location"/>
+              <span className="error">{errors.location}</span>
             </div>
 
             <div className="field">
               <label>About</label>
               <input type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"/>
+              <span className="error">{errors.about}</span>
             </div>
 
-            <div className="field">
-              <label>Event Location</label>
-              <div className="field">
-                <input type="text" name="location" value={location} onChange={this.handleFieldChange} placeholder="Event location"/>
-              </div>
-            </div>
             <div className="field">
               <div className="fields">
                 <label>Event Dates</label>
