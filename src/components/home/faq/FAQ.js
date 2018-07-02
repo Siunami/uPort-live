@@ -3,23 +3,34 @@ import React, { Component } from 'react'
 import Markdown from 'markdown-to-jsx'
 
 class FAQ extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            markdown:""
+        }
+      }
+
+    componentDidMount() {
+        const readmePath = require("./FAQ.md");
+      
+        fetch(readmePath)
+          .then(response => {
+            return response.text()
+          })
+          .then(text => {
+            console.log(this.state.markdown)
+            this.setState({
+              markdown: text
+            })
+          })
+      }
+
     render() {
-        
       return(
         <main className="container">
             <Markdown>
-                {"## Table"}
+                {this.state.markdown}
             </Markdown>
-            <div className="row">
-                <div className="column center aligned">
-                    <p>FAQ</p>
-                </div>
-            </div>
-            <div className="row">
-                <div className="column center aligned">
-                    <h1 className="banner-head">Create Proof of Attendence badges for your events with uPort Live</h1>
-                </div>
-            </div>
         </main>
       )
     }
