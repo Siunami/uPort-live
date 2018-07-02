@@ -36,6 +36,13 @@ export class EventCheckinAttestor extends Component {
       this.createEventIdentity(nextProps)
   }
 
+  /**
+   * Create a new instance of Connect with the did + private Key of
+   * the *event* itself. This is saved onto the component as this.eventIdentity.
+   * Additionally this creates the claim that will be issued to attendees, and
+   * saves it as this.claim.  Finally creates a checkin waiting handler
+   * to continuously update the QR code and allow new users to check in
+   */
   createEventIdentity(props) {
     // Extract relevant data from the owner's event credential
     const {identifier, ...details} = props.eventData
@@ -53,12 +60,21 @@ export class EventCheckinAttestor extends Component {
       credentials: new Credentials({did, signer})
     })
 
-    this.eventIdentity.requestCredentials({
-      requested: ['address', 'name'],
-    }, this.updateQR).then(this.doCheckin)
+    // Function to initiate the checkin flow
+    this.waitForCheckin = () => {
+      this.eventIdentity.requestCredentials(
+        { requested: ['address', 'name'] }, 
+        this.updateQR
+      ).then(
+        this.doCheckin
+      )
+    }
   }
 
-  updateQR(uri, cancel, appName, firstRequest) {
+  /**
+   * Regenerate the displayed QR code on the checkin page
+   */
+  updateQR(uri /*, cancel, appName, firstRequest*/ ) {
     const QR = QRUtil.getQRDataURI(uri)
     this.setState({QR})
   }
@@ -80,24 +96,7 @@ export class EventCheckinAttestor extends Component {
     this.setState({checkinCount: checkinCount + 1})
 
     // Restart the flow
-    this.eventIdentity.requestCredentials({
-      requested: ['address', 'name'],
-    }, this.updateQR).then(this.doCheckin)
-
-    // // Check in the next user, making the request from the
-    // // EVENT's identity
-    // this.eventIdentity.requestCredentials({
-    //   requested: ['address', 'name'],
-    //   // notifications: true
-    // }).then(() => {
-    // // Push the attendance credential
-    // this.eventIdentity.attestCredentials({
-    //   sub: address,
-    //   claim: this.claim
-    // })
-    // // Update the checkin count
-    // this.setState({checkinCount: checkinCount + 1})
-    // })
+    this.waitForCheckin()
   }
 
   render() {
