@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import { LoginButton } from '../user'
 import uPortLogo from '../../img/uport-logo.svg'
-import Instructions from './how'
 
 class Home extends Component {
   render() {
@@ -33,11 +32,6 @@ class Home extends Component {
           </div>
 
         </div>
-        {/* <h4 className="ui horizontal divider header">
-          <i className="tag icon"></i>
-          Description
-        </h4> */}
-        <Instructions/>
       </main>
     )
   }

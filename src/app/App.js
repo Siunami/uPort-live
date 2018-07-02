@@ -4,10 +4,11 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 
 import store from './store'
-import { UserIsAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth } from '../util/wrappers.js'
+import { UserIsAuthenticated, UserIsNotAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth } from '../util/wrappers.js'
 import { 
   LoginButton, LogoutButton,
-  Home, Profile, EventDashboard, EventCreator, EventCheckinAttestor
+  Home, Profile, EventDashboard, EventCreator, EventCheckinAttestor,
+  About
 } from '../components'
 
 const history = syncHistoryWithStore(browserHistory, store)
@@ -31,6 +32,7 @@ const App = () => (
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
         <Route path="create" component={UserIsAuthenticated(EventCreator)} />
         <Route path="checkin" component={UserIsAuthenticated(EventCheckinAttestor)} />
+        <Route path="about" component={UserIsNotAuthenticated(About)} />
       </Route>
     </Router>
   </Provider>
@@ -60,7 +62,12 @@ const MenuWrapper = ({children}) => {
   // Links to be displayed to logged out users
   const OnlyGuestLinks = HiddenOnlyAuth(() =>
     <ul className="navbar-right">
-      <LoginButton>login</LoginButton>
+      <li className="menu-item">
+        <Link to="/about" className="menu-link">About</Link>
+      </li>
+      <li className="menu-item">
+        <LoginButton>login</LoginButton>
+      </li>
     </ul>
   )
 
