@@ -30,6 +30,20 @@ class Home extends Component {
               </LoginButton>
             </div>
           </div>
+          <div className="row">
+            <div className="column center aligned">
+              <img style={{'border-radius':'100px','width': '200px', 'height':'auto'}} src={require("./empty-photo.jpg")}></img>
+              <h3>Create an event</h3>
+            </div>
+            <div className="column center aligned">
+              <img style={{'border-radius':'100px','width': '200px', 'height':'auto'}} src={require("./empty-photo.jpg")}></img>
+              <h3>Open QR code</h3>
+            </div>
+            <div className="column center aligned">
+              <img style={{'border-radius':'100px','width': '200px', 'height':'auto'}} src={require("./empty-photo.jpg")}></img>
+              <h3>Users collect proof of attendance</h3>
+            </div>
+          </div>
 
         </div>
       </main>

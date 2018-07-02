@@ -8,7 +8,7 @@ import { UserIsAuthenticated, UserIsNotAuthenticated, HiddenOnlyAuth, VisibleOnl
 import { 
   LoginButton, LogoutButton,
   Home, Profile, EventDashboard, EventCreator, EventCheckinAttestor,
-  About
+  About, FAQ
 } from '../components'
 
 const history = syncHistoryWithStore(browserHistory, store)
@@ -33,6 +33,7 @@ const App = () => (
         <Route path="create" component={UserIsAuthenticated(EventCreator)} />
         <Route path="checkin" component={UserIsAuthenticated(EventCheckinAttestor)} />
         <Route path="about" component={UserIsNotAuthenticated(About)} />
+        <Route path="FAQ" component={UserIsNotAuthenticated(FAQ)} />
       </Route>
     </Router>
   </Provider>
@@ -64,6 +65,9 @@ const MenuWrapper = ({children}) => {
     <ul className="navbar-right">
       <li className="menu-item">
         <Link to="/about" className="menu-link">About</Link>
+      </li>
+      <li className="menu-item">
+        <Link to="/FAQ" className="menu-link">FAQ</Link>
       </li>
       <li className="menu-item">
         <LoginButton>login</LoginButton>
