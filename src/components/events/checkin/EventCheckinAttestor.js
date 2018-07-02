@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-// Watch out, we got two different things called connect
-import { Connect, SimpleSigner, Credentials } from 'uport-connect'
+import { Connect, SimpleSigner, Credentials, QRUtil } from 'uport-connect'
 import { connect } from 'react-redux'
 
 import { endCheckin } from './actions'
@@ -19,10 +18,12 @@ export class EventCheckinAttestor extends Component {
     // TODO: Maybe move this into the redux store or something so that
     // it can persist accross checkin sessions? unsure if this is possible
     this.state = {
+      QR: null,
       checkinCount: 0
     }
 
     this.doCheckin = this.doCheckin.bind(this)
+    this.updateQR = this.updateQR.bind(this)
   }
 
   componentDidMount() {
@@ -51,36 +52,58 @@ export class EventCheckinAttestor extends Component {
     this.eventIdentity = new Connect(details.name, {
       credentials: new Credentials({did, signer})
     })
+
+    this.eventIdentity.requestCredentials({
+      requested: ['address', 'name'],
+    }, this.updateQR).then(this.doCheckin)
+  }
+
+  updateQR(uri, cancel, appName, firstRequest) {
+    const QR = QRUtil.getQRDataURI(uri)
+    this.setState({QR})
   }
 
   /**
    * Pop up a new uport login flow, initiated by the Connect object
    * with the identity of the event
    */
-  doCheckin() {
+  doCheckin({address}) {
     const {checkinCount} = this.state
 
-    // Check in the next user, making the request from the
-    // EVENT's identity
+    // Push the attendance credential
+    this.eventIdentity.attestCredentials({
+      sub: address,
+      claim: this.claim
+    })
+
+    // Update the checkin count
+    this.setState({checkinCount: checkinCount + 1})
+
+    // Restart the flow
     this.eventIdentity.requestCredentials({
       requested: ['address', 'name'],
-      // notifications: true
-    }).then(({address}) => {
-      // Push the attendance credential
-      this.eventIdentity.attestCredentials({
-        sub: address,
-        exp: 2000000000,
-        claim: this.claim
-      })
-      // Update the checkin count
-      this.setState({checkinCount: checkinCount + 1})
-    })
+    }, this.updateQR).then(this.doCheckin)
+
+    // // Check in the next user, making the request from the
+    // // EVENT's identity
+    // this.eventIdentity.requestCredentials({
+    //   requested: ['address', 'name'],
+    //   // notifications: true
+    // }).then(() => {
+    // // Push the attendance credential
+    // this.eventIdentity.attestCredentials({
+    //   sub: address,
+    //   claim: this.claim
+    // })
+    // // Update the checkin count
+    // this.setState({checkinCount: checkinCount + 1})
+    // })
   }
 
   render() {
     const {returnToDashboard, eventData} = this.props
     const name = eventData && eventData.name
-    const {checkinCount} = this.state
+    const {checkinCount, QR} = this.state
 
     return (
       <main className="container">
@@ -93,9 +116,10 @@ export class EventCheckinAttestor extends Component {
           </div>
           <h2>Welcome to {name}!</h2>
           <p>Use your uPort mobile application to receive a Proof of Attendance credential</p>
-          <button className="ui button" id="checkin" onClick={this.doCheckin} disabled={!eventData}>
+          <img src={QR} />
+          {/*<button className="ui button" id="checkin" onClick={this.doCheckin} disabled={!eventData}>
             <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" />Check in with uPort
-          </button>
+          </button>*/}
           <h5>{checkinCount} attendees checked in so far</h5>
         </div>
       </main>
