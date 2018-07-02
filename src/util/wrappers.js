@@ -2,7 +2,6 @@ import { UserAuthWrapper } from 'redux-auth-wrapper'
 import { routerActions } from 'react-router-redux'
 
 // Layout Component Wrappers
-
 export const UserIsAuthenticated = UserAuthWrapper({
   authSelector: state => state.user.data,
   redirectAction: routerActions.replace,
@@ -20,7 +19,6 @@ export const UserIsNotAuthenticated = UserAuthWrapper({
 })
 
 // UI Component Wrappers
-
 export const VisibleOnlyAuth = UserAuthWrapper({
   authSelector: state => state.user,
   wrapperDisplayName: 'VisibleOnlyAuth',

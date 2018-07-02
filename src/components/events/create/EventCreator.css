@@ -1,0 +1,8 @@
+/**
+ * Styles for the event creator
+ */
+
+span.error {
+	color: red;
+	font-style: italic;
+}
