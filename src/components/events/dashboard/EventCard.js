@@ -21,6 +21,7 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
 
   const dateIcon = moment(startDate).format('MM/D')
   const dateRange = formatDateRange(startDate, endDate)
+  const shortDesc = shortenDescription(about)
 
 	return (
     <div className="ui card">
@@ -30,7 +31,7 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
         <div className="meta">{location}</div>
         <hr/>
         <div className="description">
-          <p>{about}</p>
+          <p>{shortDesc}</p>
         </div>
       </div>
       {isActive && (
@@ -40,6 +41,22 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
       )}
     </div>
 	)
+}
+
+/**
+ * Shorten long event descriptions to a standard size
+ * @param {String} desc -- description of event
+ */
+function shortenDescription(desc){
+  var maxLength = 150 // maximum number of characters to extract
+
+  //trim the string to the maximum length
+  var trimmedString = desc.substr(0, maxLength);
+
+  //re-trim if we are in the middle of a word
+  trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
+
+  return trimmedString + "..."
 }
 
 /**

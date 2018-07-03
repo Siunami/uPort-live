@@ -7,7 +7,9 @@ import store from './store'
 import { UserIsAuthenticated, UserIsNotAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth } from '../util/wrappers.js'
 import { 
   LoginButton, LogoutButton,
-  Home, Profile, EventDashboard, EventCreator, EventCheckinAttestor,
+  Home, 
+  // Profile, 
+  EventDashboard, EventCreator, EventCheckinAttestor,
   About, FAQ
 } from '../components'
 
@@ -29,7 +31,7 @@ const App = () => (
       <Route path="/" component={MenuWrapper}>
         <IndexRoute component={UserIsNotAuthenticated(Home)} />
         <Route path="dashboard" component={UserIsAuthenticated(EventDashboard)} />
-        <Route path="profile" component={UserIsAuthenticated(Profile)} />
+        {/* <Route path="profile" component={UserIsAuthenticated(Profile)} /> */}
         <Route path="create" component={UserIsAuthenticated(EventCreator)} />
         <Route path="checkin" component={UserIsAuthenticated(EventCheckinAttestor)} />
         <Route path="about" component={About} />
@@ -53,9 +55,9 @@ const MenuWrapper = ({children}) => {
       <li className="menu-item">
         <Link to="/dashboard" className="menu-link">dashboard</Link>
       </li>
-      <li className="menu-item">
+      {/* <li className="menu-item">
         <Link to="/profile" className="menu-link">profile</Link>
-      </li>
+      </li> */}
       <li className="menu-item">
         <Link to="/about" className="menu-link">about</Link>
       </li>

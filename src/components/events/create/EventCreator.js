@@ -8,6 +8,8 @@ import moment from 'moment'
 import { createEvent } from './actions'
 import { uport } from '../../../util/connectors'
 
+import eventImage from '../../../img/eventcredential.jpg'
+
 import './EventCreator.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -108,7 +110,7 @@ class EventCreator extends Component {
     uport.attestCredentials({
       sub: authData.address,
       claim: {
-        UPORT_LIVE_EVENT: eventDetails
+        uportLiveEvent: eventDetails
       }
     }).then(() => {
       createEvent(eventDetails)
@@ -144,41 +146,54 @@ class EventCreator extends Component {
 
     return (
       <main className="container">
-        <div className="fullpage">
-          <h1>Create an Event</h1>
-
-          <form className="ui form" onSubmit={this.handleSubmit}>
-            <div className="field">
-              <label>Event Name</label>
-              <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
-              <span className="error">{errors.name}</span>
+        <div className="ui two column stackable grid">
+          <div className="row">
+            <div className="six wide column">
+              <br></br><br></br><br></br><br></br>
+              <h3>This is the event creator form</h3>
+              <h3>Make sure to double check all information is correct as it can't be changed later</h3>
+              <h3>The information inputted here is what attendees will see when they collect their badges later</h3>
+              <img style={{
+                width: '250px',
+                height: 'auto'
+              }} src={eventImage}></img>
             </div>
-
-            <div className="field">
-              <label>Event Location</label>
-              <input type="text" name="location" value={location} onChange={this.handleFieldChange} placeholder="Event location"/>
-              <span className="error">{errors.location}</span>
-            </div>
-
-            <div className="field">
-              <label>About</label>
-              <input type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"/>
-              <span className="error">{errors.about}</span>
-            </div>
-
-            <div className="field">
-              <div className="fields">
-                <label>Event Dates</label>
-                <div className="field">
-                  <DatePicker selected={startDate} onChange={updateStartDate} />
+            <div className="ten wide column">
+            <h1>Create an Event</h1>
+            <form className="ui form" onSubmit={this.handleSubmit}>
+                <div className="column">
+                  <div className="field">
+                    <h4>Event Name</h4>
+                    <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
+                    <span className="error">{errors.name}</span>
+                  </div>
+                  <div className="field">
+                    <h4>Event Location</h4>
+                    <input type="text" name="location" value={location} onChange={this.handleFieldChange} placeholder="Event location"/>
+                    <span className="error">{errors.location}</span>
+                  </div>
+                  <div className="field">
+                    <h4>About</h4>
+                    <textarea style={{'white-space': 'pre-line',}} type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"></textarea>
+                    {/* <input type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"/> */}
+                    <span className="error">{errors.about}</span>
+                  </div>
+                  <div className="field">
+                    <h4>Event Dates</h4>
+                    <div className="fields">
+                      <div className="field">
+                        <DatePicker selected={startDate} onChange={updateStartDate} />
+                      </div>
+                      <div className="field">
+                        <DatePicker selected={endDate} onChange={updateEndDate} />
+                      </div>
+                      <input className="ui button" type="submit" value="Create!" />
+                    </div>
+                  </div>
                 </div>
-                <div className="field">
-                  <DatePicker selected={endDate} onChange={updateEndDate} />
-                </div>
-              </div>
+              </form>
             </div>
-            <input className="ui button" type="submit" value="Create!" />
-          </form>
+          </div>
         </div>
       </main>
     )

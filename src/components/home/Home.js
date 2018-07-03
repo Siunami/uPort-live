@@ -9,10 +9,17 @@ import uPortLogo from '../../img/uport-logo.svg'
 
 import './Home.css'
 
+import consensysLogo from '../../img/consensys-logo.png'
+
 class Home extends Component {
   render() {
     return (
       <main className="container">
+      {(this.state && this.state.spinner) ? (
+        <div className="spinner-wrapper">
+          <img className="spinner" src={consensysLogo} />
+        </div>
+      ) : (
         <div className="ui three column width centered grid">
           <div className="row">
             <div className="column center aligned">
@@ -26,13 +33,13 @@ class Home extends Component {
           </div>
           <div className="row">
             <div className="column">
-              <LoginButton
+              <LoginButton onClick={() => this.setState({spinner: true})}
                 style={{
                   border: '1px solid #fff', 
                   padding: '0.25em 0.5em',
                   fontSize: '1.5rem'
                 }}>
-              <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" /> Login with uPort
+                <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" /> Login with uPort
               </LoginButton>
             </div>
           </div>
@@ -47,18 +54,19 @@ class Home extends Component {
               <div className="imgbox">
                 <img className="feature" src={qrIcon} />
               </div>
-              <h3>Open QR code</h3>
+              <h3>Generate QR code</h3>
             </div>
             <div className="column center aligned">
               <div className="imgbox">
                 <img className="feature" src={credentialIcon} />
               </div>
-              <h3>Users collect proof of attendance</h3>
+              <h3>Attendees collect proof of attendance</h3>
             </div>
           </div>
         </div>
+      )}
       </main>
-    )
+    )  
   }
 }
 
