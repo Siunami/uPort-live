@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 
 import { LoginButton } from '../user'
+
+import eventIcon from '../../img/event-icon.png'
+import qrIcon from '../../img/qr-icon.png'
+import credentialIcon from '../../img/credential-icon.png'
 import uPortLogo from '../../img/uport-logo.svg'
+
+import './Home.css'
 
 class Home extends Component {
   render() {
@@ -30,21 +36,26 @@ class Home extends Component {
               </LoginButton>
             </div>
           </div>
-          <div className="row">
+          <div id="imagerow" className="row">
             <div className="column center aligned">
-              <img style={{'border-radius':'100px','width': '200px', 'height':'auto'}} src={require("./empty-photo.jpg")}></img>
+              <div className="imgbox">
+                <img className="feature" src={eventIcon} />
+              </div>
               <h3>Create an event</h3>
             </div>
             <div className="column center aligned">
-              <img style={{'border-radius':'100px','width': '200px', 'height':'auto'}} src={require("./empty-photo.jpg")}></img>
+              <div className="imgbox">
+                <img className="feature" src={qrIcon} />
+              </div>
               <h3>Open QR code</h3>
             </div>
             <div className="column center aligned">
-              <img style={{'border-radius':'100px','width': '200px', 'height':'auto'}} src={require("./empty-photo.jpg")}></img>
+              <div className="imgbox">
+                <img className="feature" src={credentialIcon} />
+              </div>
               <h3>Users collect proof of attendance</h3>
             </div>
           </div>
-
         </div>
       </main>
     )
