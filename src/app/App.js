@@ -27,13 +27,13 @@ const App = () => (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={MenuWrapper}>
-        <IndexRoute component={Home} />
+        <IndexRoute component={UserIsNotAuthenticated(Home)} />
         <Route path="dashboard" component={UserIsAuthenticated(EventDashboard)} />
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
         <Route path="create" component={UserIsAuthenticated(EventCreator)} />
         <Route path="checkin" component={UserIsAuthenticated(EventCheckinAttestor)} />
-        <Route path="about" component={UserIsNotAuthenticated(About)} />
-        <Route path="FAQ" component={UserIsNotAuthenticated(FAQ)} />
+        <Route path="about" component={About} />
+        <Route path="faq" component={FAQ} />
       </Route>
     </Router>
   </Provider>
@@ -51,10 +51,16 @@ const MenuWrapper = ({children}) => {
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <ul className="navbar-right">
       <li className="menu-item">
-        <Link to="/dashboard" className="menu-link">Dashboard</Link>
+        <Link to="/dashboard" className="menu-link">dashboard</Link>
       </li>
       <li className="menu-item">
-        <Link to="/profile" className="menu-link">Profile</Link>
+        <Link to="/profile" className="menu-link">profile</Link>
+      </li>
+      <li className="menu-item">
+        <Link to="/about" className="menu-link">about</Link>
+      </li>
+      <li className="menu-item">
+        <Link to="/FAQ" className="menu-link">faq</Link>
       </li>
       <LogoutButton />
     </ul>
@@ -64,10 +70,10 @@ const MenuWrapper = ({children}) => {
   const OnlyGuestLinks = HiddenOnlyAuth(() =>
     <ul className="navbar-right">
       <li className="menu-item">
-        <Link to="/about" className="menu-link">About</Link>
+        <Link to="/about" className="menu-link">about</Link>
       </li>
       <li className="menu-item">
-        <Link to="/FAQ" className="menu-link">FAQ</Link>
+        <Link to="/FAQ" className="menu-link">faq</Link>
       </li>
       <li className="menu-item">
         <LoginButton>login</LoginButton>
@@ -81,12 +87,11 @@ const MenuWrapper = ({children}) => {
         <div className="nav-heading">
           <Link to="/">uPort Live</Link>
         </div>
-        <OnlyGuestLinks />
         <OnlyAuthLinks />
+        <OnlyGuestLinks />
       </nav>
-
       {children}
     </div>
-  );
+  )
 }
 

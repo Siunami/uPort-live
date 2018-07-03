@@ -8,8 +8,6 @@ var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
 
-
-
 function ensureSlash(path, needsSlash) {
   var hasSlash = path.endsWith('/');
   if (hasSlash && !needsSlash) {
@@ -119,7 +117,8 @@ module.exports = {
           /\.json$/,
           /\.woff$/,
           /\.woff2$/,
-          /\.(ttf|svg|eot)$/
+          /\.(ttf|svg|eot)$/,
+          /\.md$/
         ],
         loader: 'url',
         query: {
@@ -155,6 +154,10 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json'
+      },
+      {
+        test: /\.md$/,
+        loader: 'raw-loader'
       },
       // "file" loader for svg
       {
