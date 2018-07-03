@@ -173,13 +173,13 @@ class EventCreator extends Component {
                   </div>
                   <div className="field">
                     <h4>About</h4>
-                    <textarea style={{'white-space': 'pre-wrap',}} type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"></textarea>
+                    <textarea style={{'white-space': 'pre-line',}} type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"></textarea>
                     {/* <input type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"/> */}
                     <span className="error">{errors.about}</span>
                   </div>
                   <div className="field">
+                    <h4>Event Dates</h4>
                     <div className="fields">
-                      <h4>Event Dates</h4>
                       <div className="field">
                         <DatePicker selected={startDate} onChange={updateStartDate} />
                       </div>
@@ -188,9 +188,7 @@ class EventCreator extends Component {
                       </div>
                       <input className="ui button" type="submit" value="Create!" />
                     </div>
-                    
                   </div>
-                  
                 </div>
               </form>
             </div>

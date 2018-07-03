@@ -28,7 +28,7 @@ class Dashboard extends Component {
           <button className="ui button" onClick={this.handleCreateEvent}>Create New Event</button>
           <br></br>
           <h3> Active Events </h3>
-          <em>Click an event card to check in attendees!</em>
+          <em>Click an event card to check in attendees!</em><br></br><br></br>
           <div className="ui three stackable cards">
           {activeEvents.map((eventDetails) =>
             <EventCard beginCheckin={beginCheckin} isActive={true} key={eventDetails.name} {...eventDetails} />
