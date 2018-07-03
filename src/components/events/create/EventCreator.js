@@ -109,7 +109,7 @@ class EventCreator extends Component {
     uport.attestCredentials({
       sub: authData.address,
       claim: {
-        UPORT_LIVE_EVENT: eventDetails
+        uportLiveEvent: eventDetails
       }
     }).then(() => {
       createEvent(eventDetails)
