@@ -8,7 +8,6 @@ var getClientEnvironment = require('./env');
 var paths = require('./paths');
 
 
-
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 var publicPath = '/';
@@ -113,7 +112,8 @@ module.exports = {
           /\.json$/,
           /\.woff$/,
           /\.woff2$/,
-          /\.(ttf|svg|eot)$/
+          /\.(ttf|svg|eot)$/,
+          /\.md$/
         ],
         loader: 'url',
         query: {
@@ -148,6 +148,10 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json'
+      },
+      {
+        test: /\.md$/,
+        loader: 'raw-loader'
       },
       // "file" loader for svg
       {

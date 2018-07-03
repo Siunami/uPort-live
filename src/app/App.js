@@ -4,10 +4,11 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 
 import store from './store'
-import { UserIsAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth } from '../util/wrappers.js'
+import { UserIsAuthenticated, UserIsNotAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth } from '../util/wrappers.js'
 import { 
   LoginButton, LogoutButton,
-  Home, Profile, EventDashboard, EventCreator, EventCheckinAttestor
+  Home, Profile, EventDashboard, EventCreator, EventCheckinAttestor,
+  About, FAQ
 } from '../components'
 
 const history = syncHistoryWithStore(browserHistory, store)
@@ -26,11 +27,13 @@ const App = () => (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={MenuWrapper}>
-        <IndexRoute component={Home} />
+        <IndexRoute component={UserIsNotAuthenticated(Home)} />
         <Route path="dashboard" component={UserIsAuthenticated(EventDashboard)} />
         <Route path="profile" component={UserIsAuthenticated(Profile)} />
         <Route path="create" component={UserIsAuthenticated(EventCreator)} />
         <Route path="checkin" component={UserIsAuthenticated(EventCheckinAttestor)} />
+        <Route path="about" component={About} />
+        <Route path="faq" component={FAQ} />
       </Route>
     </Router>
   </Provider>
@@ -48,10 +51,16 @@ const MenuWrapper = ({children}) => {
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <ul className="navbar-right">
       <li className="menu-item">
-        <Link to="/dashboard" className="menu-link">Dashboard</Link>
+        <Link to="/dashboard" className="menu-link">dashboard</Link>
       </li>
       <li className="menu-item">
-        <Link to="/profile" className="menu-link">Profile</Link>
+        <Link to="/profile" className="menu-link">profile</Link>
+      </li>
+      <li className="menu-item">
+        <Link to="/about" className="menu-link">about</Link>
+      </li>
+      <li className="menu-item">
+        <Link to="/FAQ" className="menu-link">faq</Link>
       </li>
       <LogoutButton />
     </ul>
@@ -60,7 +69,15 @@ const MenuWrapper = ({children}) => {
   // Links to be displayed to logged out users
   const OnlyGuestLinks = HiddenOnlyAuth(() =>
     <ul className="navbar-right">
-      <LoginButton>login</LoginButton>
+      <li className="menu-item">
+        <Link to="/about" className="menu-link">about</Link>
+      </li>
+      <li className="menu-item">
+        <Link to="/FAQ" className="menu-link">faq</Link>
+      </li>
+      <li className="menu-item">
+        <LoginButton>login</LoginButton>
+      </li>
     </ul>
   )
 
@@ -70,12 +87,11 @@ const MenuWrapper = ({children}) => {
         <div className="nav-heading">
           <Link to="/">uPort Live</Link>
         </div>
-        <OnlyGuestLinks />
         <OnlyAuthLinks />
+        <OnlyGuestLinks />
       </nav>
-
       {children}
     </div>
-  );
+  )
 }
 
