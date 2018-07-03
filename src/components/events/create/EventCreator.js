@@ -11,6 +11,7 @@ import { uport } from '../../../util/connectors'
 import './EventCreator.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
+
 /**
  * @classdesc
  * The event ownership attestation generator component 
