@@ -118,9 +118,6 @@ export class EventCheckinAttestor extends Component {
           <h2>Welcome to {name}!</h2>
           <p>Use your uPort mobile application to receive a Proof of Attendance credential</p>
           <img src={QR} />
-          {/*<button className="ui button" id="checkin" onClick={this.doCheckin} disabled={!eventData}>
-            <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" />Check in with uPort
-          </button>*/}
           <h5>{checkinCount} attendees checked in so far</h5>
         </div>
       </main>
