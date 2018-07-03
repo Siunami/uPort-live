@@ -105,23 +105,35 @@ export class EventCheckinAttestor extends Component {
     const {returnToDashboard, eventData} = this.props
     const name = eventData && eventData.name
     const {checkinCount, QR} = this.state
+    const location = eventData && eventData.location
+    const about = eventData && eventData.about
+    console.log(eventData)
 
     return (
       <main className="container">
-        <div className="fullpage">
-        <div className="ui animated button" onClick={returnToDashboard} tabIndex="0">
-            <div className="visible content">Back</div>
-            <div className="hidden content">
-              <i className="left arrow icon"></i>
+        <div className="ui two column stackable grid">
+          <div className="row">
+            <div className="six wide column">
+              <br></br><br></br>
+              <div className="ui animated button" onClick={returnToDashboard} tabIndex="0">
+                <div className="visible content">Back</div>
+                <div className="hidden content">
+                  <i className="left arrow icon"></i>
+                </div>
+              </div>
+              <h1>Welcome to {name}!</h1>
+              <h3>Use your uPort mobile application to check in and receive a Proof of Attendance credential</h3>
+              <h3>About the event </h3>
+              <p>{about}</p>
+            </div>
+            <div className="ten wide column">
+              <img src={QR} />
+              {/*<button className="ui button" id="checkin" onClick={this.doCheckin} disabled={!eventData}>
+                <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" />Check in with uPort
+              </button>*/}
+              <h5>{checkinCount} attendees checked in so far</h5>
             </div>
           </div>
-          <h2>Welcome to {name}!</h2>
-          <p>Use your uPort mobile application to receive a Proof of Attendance credential</p>
-          <img src={QR} />
-          {/*<button className="ui button" id="checkin" onClick={this.doCheckin} disabled={!eventData}>
-            <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" />Check in with uPort
-          </button>*/}
-          <h5>{checkinCount} attendees checked in so far</h5>
         </div>
       </main>
     )
