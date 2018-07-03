@@ -1,0 +1,18 @@
+/** Home.css */
+
+div.imgbox {
+	background-color: #fff;
+	border: 1px solid #aaa;
+	border-radius: 100px;
+	width: 200px;
+}
+
+img.feature {
+	width: 200px;
+	height: auto;
+	padding: 40px;
+}
+
+#imagerow {
+	width: auto !important;
+}
