@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Markdown from 'markdown-to-jsx'
 
-import a from '../../../../about.md'
+import about from '../../../../about.md'
 
 class About extends Component {
   render() {
@@ -9,7 +9,7 @@ class About extends Component {
       <main className="container">
       <div className="fullpage" style={{textAlign: 'left'}}>
         <Markdown>
-          {a}
+          {about}
         </Markdown>
       </div>
     </main>
