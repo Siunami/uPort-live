@@ -33,6 +33,20 @@ pre {
   background: #eee;
 }
 
+/** Override semantic */
+a { 
+  /** 
+   * SEMANTIC IS DOING NASTY THINGS TO US.
+   * SHOULD NOT HAVE TO USE !IMPORTANT 
+   */
+  color: #fff !important;
+  font-weight: bold;
+} 
+
+a:hover {
+  text-decoration: underline !important;  
+}
+
 /** 
  * Utility classes for common poisitoning use cases, could be repalced with framework classes,
  * but starting small
