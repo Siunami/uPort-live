@@ -16,9 +16,9 @@ import {
 const history = syncHistoryWithStore(browserHistory, store)
 
 // Styles
-import './App.css'
 import '../fonts/open-sans.css'
 import '../../semantic/dist/semantic.min.css'
+import './App.css'
 
 /**
  * This is the App's root component, which specifies the routing etc.
@@ -87,7 +87,7 @@ const MenuWrapper = ({children}) => {
     <div className="App">
       <nav className="navbar">
         <div className="nav-heading">
-          <Link to="/">uPort Live</Link>
+          <Link to="/"><h2>uPort Live</h2></Link>
         </div>
         <OnlyAuthLinks />
         <OnlyGuestLinks />
