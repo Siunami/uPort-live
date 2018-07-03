@@ -5,9 +5,9 @@ import { logoutUser } from './actions'
 
 export const LogoutButton = ({ onLogoutUserClick }) => {
   return(
-    <li className="menu-item">
-      <a href="#" className="menu-link" onClick={(event) => onLogoutUserClick(event)}>logout</a>
-    </li>
+    <div className="logout-container menu-item">
+      <button href="#" className="logout-button" onClick={(event) => onLogoutUserClick(event)}>logout</button>
+    </div>
   )
 }
 

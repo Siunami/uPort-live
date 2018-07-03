@@ -5,7 +5,7 @@ import FAQ from '../../../../faq.md'
 
 const FAQPage = () => (
   <main className="container">
-    <div className="fullpage" style={{textAlign: 'left'}}>
+    <div id="bodyContent" className="fullpage" style={{textAlign: 'left'}}>
       <Markdown>
         {FAQ}
       </Markdown>

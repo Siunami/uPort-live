@@ -23,9 +23,9 @@ class Dashboard extends Component {
     
     return (
       <main className="container">
-        <div className="fullpage">
+        <div id="bodyContent" className="fullpage">
           <h2>Welcome, {authData.name}!</h2>
-          <button className="ui button" onClick={this.handleCreateEvent}>Create New Event</button>
+          <button className="navButton" onClick={this.handleCreateEvent}>Create New Event</button>
           <br></br>
           <h3> Active Events </h3>
           <em>Click an event card to check in attendees!</em><br></br><br></br>

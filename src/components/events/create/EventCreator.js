@@ -145,7 +145,7 @@ class EventCreator extends Component {
 
     return (
       <main className="container">
-        <div className="ui two column stackable grid">
+        <div id="bodyContent" className="ui two column stackable grid">
           <div className="row">
             <div className="six wide column">
               <br></br><br></br><br></br><br></br>
@@ -186,7 +186,7 @@ class EventCreator extends Component {
                       <div className="field">
                         <DatePicker selected={endDate} onChange={updateEndDate} />
                       </div>
-                      <input className="ui button" type="submit" value="Create!" />
+                      <input className="navButton" type="submit" value="Create!" />
                     </div>
                   </div>
                 </div>

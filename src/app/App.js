@@ -19,7 +19,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 import '../fonts/open-sans.css'
 import '../../semantic/dist/semantic.min.css'
 import './App.css'
-
+// import 'font-awesome/css/font-awesome.min.css';
 /**
  * This is the App's root component, which specifies the routing etc.
  * The Main component (previously called App) wrapping all of these
@@ -64,13 +64,18 @@ const MenuWrapper = ({children}) => {
       <li className="menu-item">
         <Link to="/FAQ" className="menu-link">faq</Link>
       </li>
-      <LogoutButton />
+      <li className="menu-item">
+        <LogoutButton />
+      </li>
     </ul>
   )
 
   // Links to be displayed to logged out users
   const OnlyGuestLinks = HiddenOnlyAuth(() =>
     <ul className="navbar-right">
+      <li className="menu-item">
+        <Link to="/" className="menu-link">home</Link>
+      </li>
       <li className="menu-item">
         <Link to="/about" className="menu-link">about</Link>
       </li>
@@ -93,6 +98,13 @@ const MenuWrapper = ({children}) => {
         <OnlyGuestLinks />
       </nav>
       {children}
+      <footer className="footer">
+        <div className="ui grid">
+          <div className="row">
+            <div className="footer-desc column center aligned">2018 © uPort</div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
