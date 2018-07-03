@@ -69,6 +69,8 @@ export class EventCheckinAttestor extends Component {
         this.doCheckin
       )
     }
+
+    this.waitForCheckin()
   }
 
   /**
