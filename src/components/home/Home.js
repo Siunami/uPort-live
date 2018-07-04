@@ -1,24 +1,21 @@
 import React, { Component } from 'react'
 
 import { LoginButton } from '../user'
+import { Spinner } from '../misc'
 
-import eventIcon from '../../img/event-icon.png'
 import qrIcon from '../../img/qr-icon.png'
+import eventIcon from '../../img/event-icon.png'
 import credentialIcon from '../../img/credential-icon.png'
 import uPortLogo from '../../img/uport-logo.svg'
 
 import './Home.css'
-
-import consensysLogo from '../../img/consensys-logo.png'
 
 class Home extends Component {
   render() {
     return (
       <main className="container">
       {(this.state && this.state.spinner) ? (
-        <div className="spinner-wrapper">
-          <img className="spinner" src={consensysLogo} />
-        </div>
+        <Spinner />
       ) : (
         <div className="ui three column width centered grid">
           <div className="row">
@@ -36,10 +33,10 @@ class Home extends Component {
               <LoginButton onClick={() => this.setState({spinner: true})}
                 style={{
                   border: '1px solid #fff', 
-                  padding: '0.25em 0.5em',
+                  borderRadius: '4px',
+                  padding: '0.5em 1em',
                   fontSize: '1.5rem'
-                }}>
-                <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" /> Login with uPort
+                }}>Login with uPort
               </LoginButton>
             </div>
           </div>

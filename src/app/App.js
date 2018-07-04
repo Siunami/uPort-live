@@ -14,9 +14,10 @@ import {
 const history = syncHistoryWithStore(browserHistory, store)
 
 // Styles
-import './App.css'
-import '../fonts/open-sans.css'
 import '../../semantic/dist/semantic.min.css'
+import '../fonts/open-sans.css'
+import './App.css'
+
 
 /**
  * This is the App's root component, which specifies the routing etc.
