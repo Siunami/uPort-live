@@ -17,7 +17,7 @@ class Home extends Component {
       {(this.state && this.state.spinner) ? (
         <Spinner />
       ) : (
-        <div className="ui three column width centered grid">
+        <div id="bodyContent" className="ui three column stackable centered grid">
           <div className="row">
             <div className="column center aligned">
               <img className="uport-logo" src={uPortLogo} alt="uPort Logo" />
@@ -29,7 +29,7 @@ class Home extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="column">
+            <div className="column center aligned">
               <LoginButton onClick={() => this.setState({spinner: true})}
                 style={{
                   border: '1px solid #fff', 

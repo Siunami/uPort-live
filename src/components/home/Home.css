@@ -1,10 +1,13 @@
 /** Home.css */
 
+
+
 div.imgbox {
-	background-color: #fff;
-	border: 1px solid #aaa;
+	background-color: #d4d4d486;
+	border: 1px solid #5c50ca86;
 	border-radius: 100px;
 	width: 200px;
+	margin:auto;
 }
 
 img.feature {

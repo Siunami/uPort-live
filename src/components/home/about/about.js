@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
+import Markdown from 'markdown-to-jsx'
+
+import about from '../../../../about.md'
 
 class About extends Component {
   render() {
     return (
       <main className="container">
-        <div className="row">
-          <div className="column center aligned">
-            <h1 className="banner-head">About</h1>
-          </div>
+        <div id="bodyContent" className="fullpage" style={{textAlign: 'left'}}>
+          <Markdown>
+            {about}
+          </Markdown>
         </div>
       </main>
     )}

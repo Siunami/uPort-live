@@ -7,7 +7,9 @@ import store from './store'
 import { UserIsAuthenticated, UserIsNotAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth } from '../util/wrappers.js'
 import { 
   LoginButton, LogoutButton,
-  Home, Profile, EventDashboard, EventCreator, EventCheckinAttestor,
+  Home, 
+  // Profile, 
+  EventDashboard, EventCreator, EventCheckinAttestor,
   About, FAQ
 } from '../components'
 
@@ -17,7 +19,6 @@ const history = syncHistoryWithStore(browserHistory, store)
 import '../../semantic/dist/semantic.min.css'
 import '../fonts/open-sans.css'
 import './App.css'
-
 
 /**
  * This is the App's root component, which specifies the routing etc.
@@ -30,7 +31,7 @@ const App = () => (
       <Route path="/" component={MenuWrapper}>
         <IndexRoute component={UserIsNotAuthenticated(Home)} />
         <Route path="dashboard" component={UserIsAuthenticated(EventDashboard)} />
-        <Route path="profile" component={UserIsAuthenticated(Profile)} />
+        {/* <Route path="profile" component={UserIsAuthenticated(Profile)} /> */}
         <Route path="create" component={UserIsAuthenticated(EventCreator)} />
         <Route path="checkin" component={UserIsAuthenticated(EventCheckinAttestor)} />
         <Route path="about" component={About} />
@@ -54,22 +55,27 @@ const MenuWrapper = ({children}) => {
       <li className="menu-item">
         <Link to="/dashboard" className="menu-link">dashboard</Link>
       </li>
-      <li className="menu-item">
+      {/* <li className="menu-item">
         <Link to="/profile" className="menu-link">profile</Link>
-      </li>
+      </li> */}
       <li className="menu-item">
         <Link to="/about" className="menu-link">about</Link>
       </li>
       <li className="menu-item">
         <Link to="/FAQ" className="menu-link">faq</Link>
       </li>
-      <LogoutButton />
+      <li className="menu-item">
+        <LogoutButton />
+      </li>
     </ul>
   )
 
   // Links to be displayed to logged out users
   const OnlyGuestLinks = HiddenOnlyAuth(() =>
     <ul className="navbar-right">
+      <li className="menu-item">
+        <Link to="/" className="menu-link">home</Link>
+      </li>
       <li className="menu-item">
         <Link to="/about" className="menu-link">about</Link>
       </li>
@@ -86,12 +92,19 @@ const MenuWrapper = ({children}) => {
     <div className="App">
       <nav className="navbar">
         <div className="nav-heading">
-          <Link to="/">uPort Live</Link>
+          <Link to="/"><h2>uPort Live</h2></Link>
         </div>
         <OnlyAuthLinks />
         <OnlyGuestLinks />
       </nav>
       {children}
+      <footer className="footer">
+        <div className="ui grid">
+          <div className="row">
+            <div className="footer-desc column center aligned">2018 © uPort</div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
