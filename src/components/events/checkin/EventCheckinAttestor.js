@@ -111,7 +111,7 @@ export class EventCheckinAttestor extends Component {
 
     return (
       <main className="container">
-        <div className="ui two column stackable grid">
+        <div id="bodyContent" className="ui two column stackable grid">
           <div className="row">
             <div className="six wide column">
               <br></br><br></br>
