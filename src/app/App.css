@@ -13,13 +13,19 @@
 }
 
 body, h1, h2, h3 {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
 }
 
 main {
-  background-color: #5C50CA;
+  z-index: 2;
+  background-color: #f1f1f1;
   min-height: 100vh;
-  color: #fff;
+  color: rgb(39, 39, 39);
+}
+
+#bodyContent {
+  margin-top:40px;
+  color:#2b2b2b;
 }
 
 button {
@@ -85,10 +91,12 @@ a:hover {
 /* The logo, when displayed in banner/emphasis style */
 .uport-logo {
   height: 10em;
+  
 }
 
 .uport-logo-icon {
   height: 16px;
+  fill:#5C50CA;
   margin-right: 5px;
   /* Fix the baseline of the image to align with text */
   transform: translateY(2px);
@@ -100,10 +108,43 @@ a:hover {
 }
 
 .login-button {
-  border-radius: 0.5em;
+  border-radius: 4px;
   border: none;
-  background-color: transparent;
-  color: #fff;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 14px 0 rgba(63,61,75,.4);
+  color: #5c50ca;
+}
+
+.login-button:hover {
+  text-decoration: underline;
+}
+
+/* Logout button styles, could be moved */
+.logout-container {
+  text-align: center;
+}
+
+.logout-button {
+  border-radius: 4px;
+  border: none;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 14px 0 rgba(63,61,75,.4);
+  color: #5c50ca;
+}
+
+.logout-button:hover {
+  text-decoration: underline;
+}
+
+.navButton {
+  border-radius: 4px;
+  border: none;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 14px 0 rgba(63,61,75,.3);
+  color: #5c50ca;
 }
 
 /**********************************************************************
@@ -113,12 +154,22 @@ a:hover {
 nav {
   position: fixed;
   width: 100%;
+  height: 60px;
   white-space: nowrap;
   padding: 5px 15px;
-  background: #0c1a2b;
+  background: #5c50ca;
+  box-shadow: 0 4px 14px 0 rgba(63,61,75,.4);
   font-size: 1.25rem;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
+  z-index: 1;
 }
+
+/* WIP/Idea: Add fingerprint swirls to navbar?? */
+/* nav.background{
+  background:url('../img/BG\ Swirls.wmf.jpg');
+  filter:alpha(opacity=20);
+  opacity: 0.3;
+} */
 
 .nav-heading {
   font-weight: bold;
@@ -128,7 +179,7 @@ nav {
 
 nav .nav-heading:hover,
 nav .menu-item:hover {
-  background: #233e5e;
+  text-decoration-color:#fff;
 }
 
 li.menu-item {
@@ -136,9 +187,12 @@ li.menu-item {
   margin: 0 0.25em;
 }
 
-.nav-heading a,
+.nav-heading a {
+  padding: 5px;
+}
+
 a.menu-link {
-  color: #fff;
+  padding: 10px;
 }
 
 nav ul.navbar-right {
@@ -147,3 +201,25 @@ nav ul.navbar-right {
   margin: 0;
   padding: 0;
 }
+
+
+/**********************************************************************
+ * Footer
+ * TODO: maybe pop navbar out into a separate stylesheet 
+ *********************************************************************/
+
+ footer {
+  border-radius: 10px 10px 0px 0px;
+  width: 100%;
+  height: 60px;
+  white-space: nowrap;
+  padding: 5px 15px;
+  background: #5c50ca;
+  box-shadow: 0 4px 14px 0 rgba(63,61,75,.4);
+  font-size: 1.25rem;
+  font-family: 'Nunito Sans', sans-serif;
+ }
+
+ .footer-desc {
+  vertical-align: middle;
+ }

@@ -13,7 +13,6 @@ import eventImage from '../../../img/eventcredential.jpg'
 import './EventCreator.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
-
 /**
  * @classdesc
  * The event ownership attestation generator component 
@@ -163,7 +162,7 @@ class EventCreator extends Component {
 
     return (
       <main className="container">
-        <div className="ui two column stackable grid">
+        <div id="bodyContent" className="ui two column stackable grid">
           <div className="row">
             <div className="six wide column">
               <br></br><br></br><br></br><br></br>

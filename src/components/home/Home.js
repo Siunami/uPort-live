@@ -20,7 +20,7 @@ class Home extends Component {
           <img className="spinner" src={consensysLogo} />
         </div>
       ) : (
-        <div className="ui three column width centered grid">
+        <div id="bodyContent" className="ui three column stackable centered grid">
           <div className="row">
             <div className="column center aligned">
               <img className="uport-logo" src={uPortLogo} alt="uPort Logo" />
@@ -32,14 +32,16 @@ class Home extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="column">
+            <div className="column center aligned">
               <LoginButton onClick={() => this.setState({spinner: true})}
                 style={{
                   border: '1px solid #fff', 
-                  padding: '0.25em 0.5em',
+                  'border-radius': '4px',
+                  padding: '0.5em 1em',
                   fontSize: '1.5rem'
                 }}>
-                <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" /> Login with uPort
+                {/* <img className="uport-logo-icon" src={uPortLogo} alt="UPort Logo" /> Login with uPort */}
+                Login with uPort
               </LoginButton>
             </div>
           </div>
