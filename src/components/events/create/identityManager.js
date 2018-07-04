@@ -1,6 +1,10 @@
 import { MNID } from 'uport-connect'
 import MuPort from 'muport-core'
 
+/**********************************************************************
+ * WIP: none of this does anything yet!!
+ *********************************************************************/
+
 const IPFS_CONF = {
   host: 'ipfs.infura.io', 
   port: '5001', 
@@ -24,7 +28,6 @@ const muportOpts = ({networkAddress}) => ({
 
 
 function createEventIdentity(credentials, eventData) {
-
   const eventProfile = {
     '@context': 'http://schema.org',
     '@type': 'Event',

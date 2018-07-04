@@ -2,6 +2,10 @@
  * Styles for the event creator
  */
 
+textarea {
+	white-space: pre-line
+}
+
 span.error {
 	color: red;
 	font-style: italic;

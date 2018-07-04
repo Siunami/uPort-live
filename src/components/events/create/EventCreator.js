@@ -6,7 +6,7 @@ import { Credentials } from 'uport'
 import moment from 'moment'
 
 import { createEvent } from './actions'
-import { uport } from '../../../util/connectors'
+import { uport, uploadToIpfs } from '../../../util/connectors'
 
 import eventImage from '../../../img/eventcredential.jpg'
 
@@ -37,6 +37,7 @@ class EventCreator extends Component {
     }
 
     this.handleFieldChange = this.handleFieldChange.bind(this)
+    this.handleFileUpload = this.handleFileUpload.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -55,6 +56,20 @@ class EventCreator extends Component {
       const errors = Object.assign({}, this.state.errors, {[name]: null})
       this.setState({errors})
     }
+  }
+
+  handleFileUpload(event) {
+    const file = event.target.files[0]
+
+    // Validate the file as an image
+    if (!file.type.startsWith('image/')) {
+      alert('only images broh')
+      return
+    }
+
+    uploadToIpfs(file)
+      .then((hash) => this.setState({imgHash: hash}))
+      .catch((err) => console.log(err))
   }
 
   /**
@@ -124,7 +139,7 @@ class EventCreator extends Component {
    * with the scanning of a QR code
    */
   render() {
-    const {name, location, startDate, endDate, about, errors} = this.state
+    const {name, location, startDate, endDate, about, errors, imgHash} = this.state
 
     // Set threshold to midnight
     const today = moment().startOf('day')
@@ -144,6 +159,8 @@ class EventCreator extends Component {
         this.setState({endDate})
     }
 
+    const iconUrl = imgHash && `https://ipfs.io/ipfs/${imgHash}`
+
     return (
       <main className="container">
         <div className="ui two column stackable grid">
@@ -159,13 +176,22 @@ class EventCreator extends Component {
               }} src={eventImage}></img>
             </div>
             <div className="ten wide column">
-            <h1>Create an Event</h1>
-            <form className="ui form" onSubmit={this.handleSubmit}>
+              <h1>Create an Event</h1>
+              <form className="ui form" onSubmit={this.handleSubmit}>
                 <div className="column">
                   <div className="field">
-                    <h4>Event Name</h4>
-                    <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
-                    <span className="error">{errors.name}</span>
+                    <div className="fields">
+                      <div className="field">
+                        <h4>Event Name</h4>
+                        <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
+                        <span className="error">{errors.name}</span>
+                      </div>
+                      <div className="field">
+                        <h4>Event image/icon</h4>
+                        <input type="file" name="image" onChange={this.handleFileUpload}/>
+                        <img src={iconUrl} width={50} />
+                      </div>
+                    </div>                  
                   </div>
                   <div className="field">
                     <h4>Event Location</h4>
@@ -174,8 +200,7 @@ class EventCreator extends Component {
                   </div>
                   <div className="field">
                     <h4>About</h4>
-                    <textarea style={{'white-space': 'pre-line',}} type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"></textarea>
-                    {/* <input type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"/> */}
+                    <textarea type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"></textarea>
                     <span className="error">{errors.about}</span>
                   </div>
                   <div className="field">
@@ -187,8 +212,10 @@ class EventCreator extends Component {
                       <div className="field">
                         <DatePicker selected={endDate} onChange={updateEndDate} />
                       </div>
-                      <input className="ui button" type="submit" value="Create!" />
                     </div>
+                  </div>
+                  <div className="field">
+                    <input className="ui button" type="submit" value="Create!" />
                   </div>
                 </div>
               </form>

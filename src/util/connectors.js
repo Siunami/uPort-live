@@ -33,6 +33,7 @@ const ipfs = IpfsAPI({
   protocol: 'https'
 })
 
+
 /**
  * Return a promise that resolves to the ipfs hash of 
  * the file or blob to upload
@@ -42,12 +43,14 @@ export function uploadToIpfs(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => {
-      ipfs.files.add(reader.result, (err, data) => {
+      const buf = ipfs.Buffer.from(reader.result)
+      ipfs.files.add(buf, (err, data) => {
         if (err) {
+          console.log(err)
           reject(new Error(err))
+        } else {
+          resolve(data[0].hash)
         }
-
-        resolve(data[0].hash)
       })
     }
 
