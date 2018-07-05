@@ -4,13 +4,11 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 
 import store from './store'
-import { UserIsAuthenticated, UserIsNotAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth } from '../util/wrappers.js'
 import { 
-  LoginButton, LogoutButton,
-  Home, 
-  // Profile, 
+  LoginButton, LogoutButton, LoginModal,
+  Home, About, FAQ, 
   EventDashboard, EventCreator, EventCheckinAttestor,
-  About, FAQ
+  UserIsAuthenticated, UserIsNotAuthenticated, HiddenOnlyAuth, VisibleOnlyAuth
 } from '../components'
 
 const history = syncHistoryWithStore(browserHistory, store)
@@ -45,10 +43,10 @@ const App = () => (
 export default App
 
 /**
- * The MenuWrappre component wraps all individual pages with a navbar
+ * The MenuWrapper component wraps all individual pages with a navbar
  * with conditional display for different links depending on Auth state
  */
-const MenuWrapper = ({children}) => {
+const MenuWrapper = ({children, ...props}) => {
   // Links to be displayed to logged in users
   const OnlyAuthLinks = VisibleOnlyAuth(() =>
     <ul className="navbar-right">
@@ -88,6 +86,15 @@ const MenuWrapper = ({children}) => {
     </ul>
   )
 
+  const { location } = props
+
+  // Show login if it is specifically requested
+  const showLoginModal = !!(
+    location && location.query 
+    && 'login' in location.query
+    && location.pathname !== '/login'
+  )
+
   return (
     <div className="App">
       <nav className="navbar">
@@ -98,6 +105,7 @@ const MenuWrapper = ({children}) => {
         <OnlyGuestLinks />
       </nav>
       {children}
+      {showLoginModal && <LoginModal />}
       <footer className="footer">
         <div className="ui grid">
           <div className="row">
@@ -108,4 +116,3 @@ const MenuWrapper = ({children}) => {
     </div>
   )
 }
-
