@@ -82,11 +82,10 @@ class LoginModal extends Component {
 
     return (
       <div className="modal fade-in" onClick={this.cancelLogin}>
-        <div className="modal-content">
         {showSpinner ? (
           <Spinner />
         ) : (
-          <div>
+          <div className="modal-content">
             <button className="cancel"
               onClick={this.cancelLogin}>x</button>
             <h2> Login to <strong>{appName}</strong></h2>
@@ -98,7 +97,6 @@ class LoginModal extends Component {
             </div>
           </div>
         )}
-        </div>
       </div>
     )
   }
