@@ -90,9 +90,8 @@ class LoginModal extends Component {
    * and cancels the listener on the messaging server
    */
   cancelLogin() {
-    const currentLocation = browserHistory.getCurrentLocation()
-    this.state.cancel()
-    browserHistory.push(currentLocation.pathname)
+    const { pathname } = browserHistory.getCurrentLocation()
+    browserHistory.push(pathname)
   }
 
   render() {
