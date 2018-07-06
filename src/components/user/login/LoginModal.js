@@ -107,7 +107,7 @@ class LoginModal extends Component {
             <button className="cancel"
               onClick={this.cancelLogin}>x</button>
             <h2> Login to <strong className="purple">{appName}</strong></h2>
-            <em>Scan the QR code with your uPort Mobile App</em>
+            <em>Scan the QR code with your uPort Mobile App</em><br/>
             <img src={QR} alt="Login QR Code - Scan with uPort Mobile App" />
             <hr/>
             <h3 style={{marginBottom: '1em'}}>Don't have uPort?</h3>

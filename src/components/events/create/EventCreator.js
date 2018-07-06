@@ -9,6 +9,7 @@ import { uploadToIpfs } from '../../misc'
 import { createEvent } from './actions'
 import { uport } from '../../user'
 
+import uploadIcon from '../../../img/upload.png'
 import eventImage from '../../../img/eventcredential.jpg'
 
 import './EventCreator.css'
@@ -22,10 +23,9 @@ import 'react-datepicker/dist/react-datepicker.css'
  *       its own page ? maybe ?
  */
 class EventCreator extends Component {
-  constructor(props, { authData }) {
+  constructor(props) {
     super(props)
 
-    authData = this.props
     this.state = {
       errors: {
         name: null,
@@ -61,6 +61,7 @@ class EventCreator extends Component {
   handleFileUpload(event) {
     const file = event.target.files[0]
 
+    console.log('tryna upload')
     // Validate the file as an image
     if (!file.type.startsWith('image/')) {
       alert('only images broh')
@@ -159,39 +160,32 @@ class EventCreator extends Component {
         this.setState({endDate})
     }
 
-    const iconUrl = imgHash && `https://ipfs.io/ipfs/${imgHash}`
+    const iconUrl = (imgHash && `https://ipfs.io/ipfs/${imgHash}`) || uploadIcon
 
     return (
       <main className="container">
         <div id="bodyContent" className="ui two column stackable grid">
           <div className="row">
-            <div className="six wide column">
-              <br></br><br></br><br></br><br></br>
-              <h3>This is the event creator form</h3>
-              <h3>Make sure to double check all information is correct as it can't be changed later</h3>
-              <h3>The information inputted here is what attendees will see when they collect their badges later</h3>
-              <img style={{
-                width: '250px',
-                height: 'auto'
-              }} src={eventImage}></img>
+            <div id="left" className="six wide column">
+              <h3>Use the form on this page to create an event</h3>
+              <h3>The information entered here will be given to attendees when they check-in as part of their badge.  Be sure to double check each field, as they can't be edited later!</h3>
+              <img id="sample-image" src={eventImage}/>
             </div>
-            <div className="ten wide column">
-              <h1>Create an Event</h1>
+
+            <div id="right" className="ten wide column">
+              <h1>Create an Event
+                <label htmlFor="image" className="image-upload">
+                  <input type="file" name="image" onChange={this.handleFileUpload}/>
+                  <img id="event-icon" src={iconUrl} width={40} height={40} />
+                </label>
+              </h1>
+
               <form className="ui form" onSubmit={this.handleSubmit}>
                 <div className="column">
                   <div className="field">
-                    <div className="fields">
-                      <div className="field">
-                        <h4>Event Name</h4>
-                        <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
-                        <span className="error">{errors.name}</span>
-                      </div>
-                      <div className="field">
-                        <h4>Event image/icon</h4>
-                        <input type="file" name="image" onChange={this.handleFileUpload}/>
-                        <img src={iconUrl} width={50} />
-                      </div>
-                    </div>                  
+                    <h4>Event Name</h4>
+                    <input type="text" name="name" value={name} onChange={this.handleFieldChange} placeholder="Event Name"/>
+                    <span className="error">{errors.name}</span>
                   </div>
                   <div className="field">
                     <h4>Event Location</h4>

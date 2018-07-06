@@ -13,11 +13,16 @@ const ipfs = IpfsAPI({
  * @param {File|Blob} file -- the file or blob object to upload
  */
 export function uploadToIpfs(file) {
+  console.log('Calling uploadToIpfs')
   return new Promise((resolve, reject) => {
+    console.log('Initializing FileReader')
     const reader = new FileReader()
     reader.onload = () => {
+      console.log('Reading file')
       const buf = ipfs.Buffer.from(reader.result)
       ipfs.files.add(buf, (err, data) => {
+        console.log('Ipfs returns')
+        console.log(data)
         if (err) {
           console.log(err)
           reject(new Error(err))
