@@ -5,10 +5,12 @@ import { connect } from 'react-redux'
 import { Credentials } from 'uport'
 import moment from 'moment'
 
+import { createEventIdentity } from './muport-id'
 import { uploadToIpfs } from '../../misc'
 import { createEvent } from './actions'
 import { uport } from '../../user'
 
+import loadingGif from '../../../img/loading.gif'
 import uploadIcon from '../../../img/upload.png'
 import eventImage from '../../../img/eventcredential.jpg'
 
@@ -33,7 +35,8 @@ class EventCreator extends Component {
         about: null
       },
       startDate: moment(),
-      endDate: moment()
+      endDate: moment(),
+      iconUrl: uploadIcon,
     }
 
     this.handleFieldChange = this.handleFieldChange.bind(this)
@@ -61,15 +64,16 @@ class EventCreator extends Component {
   handleFileUpload(event) {
     const file = event.target.files[0]
 
-    console.log('tryna upload')
     // Validate the file as an image
     if (!file.type.startsWith('image/')) {
       alert('only images broh')
       return
     }
 
+    this.setState({iconUrl: loadingGif})
+
     uploadToIpfs(file)
-      .then((hash) => this.setState({imgHash: hash}))
+      .then((hash) => this.setState({iconUrl: `https://ipfs.io/ipfs/${hash}`}))
       .catch((err) => console.log(err))
   }
 
@@ -101,12 +105,14 @@ class EventCreator extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const {authData, createEvent} = this.props
-    const {name, location, startDate, endDate, about} = this.state
+    const {name, location, startDate, endDate, about, iconUrl} = this.state
 
     // Return early if invalid
     if (!this.checkFields()) {
       return
     }
+
+    console.log()
 
     // Create a did keypair for the event
     // identifier = {did, privateKey}
@@ -119,6 +125,7 @@ class EventCreator extends Component {
       organizer: authData.address,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
+      image: iconUrl,
       name, location, about
     }
 
@@ -140,7 +147,7 @@ class EventCreator extends Component {
    * with the scanning of a QR code
    */
   render() {
-    const {name, location, startDate, endDate, about, errors, imgHash} = this.state
+    const {name, location, startDate, endDate, about, errors, iconUrl} = this.state
 
     // Set threshold to midnight
     const today = moment().startOf('day')
@@ -160,7 +167,7 @@ class EventCreator extends Component {
         this.setState({endDate})
     }
 
-    const iconUrl = (imgHash && `https://ipfs.io/ipfs/${imgHash}`) || uploadIcon
+    console.log(`rendering: img=${iconUrl}`)
 
     return (
       <main className="container">
@@ -169,7 +176,7 @@ class EventCreator extends Component {
             <div id="left" className="six wide column">
               <h3>Use the form on this page to create an event</h3>
               <h3>The information entered here will be given to attendees when they check-in as part of their badge.  Be sure to double check each field, as they can't be edited later!</h3>
-              <img id="sample-image" src={eventImage}/>
+              <img id="sample-image" src={eventImage} />
             </div>
 
             <div id="right" className="ten wide column">
