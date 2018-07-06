@@ -1,6 +1,5 @@
 import { Connect, SimpleSigner } from 'uport-connect'
 import { Credentials } from 'uport'
-import IpfsAPI from 'ipfs-api'
 
 /**********************************************************************
  * Use a client-side signer with a junk key.
@@ -24,37 +23,3 @@ export const uport = new Connect('uPort Live', {
 
 // A web3 provider in case you need it
 export const web3 = uport.getWeb3()
-
-
-// Initialize IPFS
-const ipfs = IpfsAPI({
-  host: 'ipfs.infura.io', 
-  port: '5001', 
-  protocol: 'https'
-})
-
-
-/**
- * Return a promise that resolves to the ipfs hash of 
- * the file or blob to upload
- * @param {File|Blob} file -- the file or blob object to upload
- */
-export function uploadToIpfs(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      const buf = ipfs.Buffer.from(reader.result)
-      ipfs.files.add(buf, (err, data) => {
-        if (err) {
-          console.log(err)
-          reject(new Error(err))
-        } else {
-          resolve(data[0].hash)
-        }
-      })
-    }
-
-    // Read the file, trigger reader.onload
-    reader.readAsArrayBuffer(file)
-  })
-}
