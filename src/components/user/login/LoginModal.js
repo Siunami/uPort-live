@@ -103,7 +103,7 @@ class LoginModal extends Component {
         {showSpinner ? (
           <Spinner />
         ) : (
-          <div className="modal-content">
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="cancel"
               onClick={this.cancelLogin}>x</button>
             <h2> Login to <strong className="purple">{appName}</strong></h2>
