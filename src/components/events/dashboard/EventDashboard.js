@@ -6,8 +6,6 @@ import moment from 'moment'
 import EventCard from './EventCard'
 import { beginCheckin } from '../checkin'
 
-import './EventDashboard.css'
-
 /**
  * @classdesc
  * This component will display all of a user's own events

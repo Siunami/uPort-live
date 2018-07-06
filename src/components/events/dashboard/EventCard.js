@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
+import './EventCard.css'
+
 /**
  * @classdesc
  * A component for displaying a single event on the user's dashboard
@@ -17,7 +19,7 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
   }
 
   // Extract event data for display
-  const {name, location, description, startDate, endDate} = eventData
+  const {name, location, description, startDate, endDate, image} = eventData
 
   const dateRange = formatDateRange(startDate, endDate)
   const shortDesc = shortenDescription(description)
@@ -31,6 +33,9 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
         <hr/>
         <div className="description">
           <p>{shortDesc}</p>
+        </div>
+        <div className="image-box">
+        {image && <img className="card-image" src={image} alt="Event Icon" />}
         </div>
       </div>
       {isActive && (
