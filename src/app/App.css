@@ -75,6 +75,11 @@ a:hover {
   
 }
 
+/* Utility class for making things purple */
+.purple {
+  color: #5c50ca;
+}
+
 .uport-logo-icon {
   height: 16px;
   fill: #5C50CA;

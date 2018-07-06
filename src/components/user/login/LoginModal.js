@@ -8,6 +8,8 @@ import { Spinner } from '../../misc'
 import { uport } from '../util/connector'
 
 import './LoginModal.css'
+import appleButton from '../../../img/apple-app.svg'
+import androidButton from '../../../img/android-app.svg'
 
 /**
  * This module is a recreation of the login modal built by uport-connect/util
@@ -33,6 +35,22 @@ class LoginModal extends Component {
     this.cancelLogin = this.cancelLogin.bind(this)
   }
 
+  /**
+   * Make sure that any new login window doesn't show the spinner
+   * Since the closeUriHandler is fired when the dialog is abandoned,
+   * this can happen if the login modal is closed and quickly reopened 
+   * on the same page.  This fixes it.
+   */
+  componentWillReceiveProps() {
+    this.setState({showSpinner: false})
+  }
+
+
+  /**
+   * On the first mount, we begin the login request, and monkeypatch
+   * the connect instance with our uri handlers. This only needs to 
+   * be done once, as subsequent renders will have the same login QR
+   */
   componentDidMount() {
     const { doLogin } = this.props
 
@@ -88,12 +106,14 @@ class LoginModal extends Component {
           <div className="modal-content">
             <button className="cancel"
               onClick={this.cancelLogin}>x</button>
-            <h2> Login to <strong>{appName}</strong></h2>
+            <h2> Login to <strong className="purple">{appName}</strong></h2>
+            <em>Scan the QR code with your uPort Mobile App</em>
             <img src={QR} alt="Login QR Code - Scan with uPort Mobile App" />
-
+            <hr/>
+            <h3 style={{marginBottom: '1em'}}>Don't have uPort?</h3>
             <div className="buttons">
-              <a href={apppleStoreLink}>App Store</a>
-              <a href={googleStoreLink}>Google Play Store</a>
+              <a href={apppleStoreLink}><img src={appleButton} alt="download from app store" /></a>
+              <a href={googleStoreLink}><img src={androidButton} alt="download from google play store" /></a>
             </div>
           </div>
         )}
