@@ -92,6 +92,7 @@ const MenuWrapper = ({children, ...props}) => {
   const showLoginModal = !!(
     location && location.query 
     && 'login' in location.query
+    // In case we want to show a separate login page 
     && location.pathname !== '/login'
   )
 
