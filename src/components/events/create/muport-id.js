@@ -12,8 +12,11 @@ const muportOpts = {
   rpcProviderUrl: `https://rinkeby.infura.io/`,
 }
 
-export function createEventIdentity(credentials, eventData) {
-  const {image, name, description} = eventData
+export function createEventIdentity(eventData) {
+  let {image, name, description, about} = eventData
+
+  // Hack! 
+  description = description || about
 
   // Fully conformant schema.org spec for Event
   const eventProfile = {
@@ -23,9 +26,9 @@ export function createEventIdentity(credentials, eventData) {
     image: {
       '@type': 'ImageObjesct',
       name: 'avatar',
-      contentUrl: eventData.image
+      contentUrl: image
     }
   }
 
-  const muportId = MuPort.newIdentity(eventProfile, null, muportOpts)
+  return MuPort.newIdentity(eventProfile, null, muportOpts)
 }

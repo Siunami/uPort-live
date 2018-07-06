@@ -30,15 +30,15 @@ class Dashboard extends Component {
           <h3> Active Events </h3>
           <em>Click an event card to check in attendees!</em><br></br><br></br>
           <div className="ui three stackable cards">
-          {activeEvents.map((eventDetails) =>
-            <EventCard beginCheckin={beginCheckin} isActive={true} key={eventDetails.name} {...eventDetails} />
+          {activeEvents.map((eventDetails, idx) =>
+            <EventCard beginCheckin={beginCheckin} isActive={true} key={`${eventDetails.name}-${idx}`} {...eventDetails} />
           )}
           </div>
 
           <h3> Past Events</h3>
           <div className="ui three stackable cards">
-          {pastEvents.map((eventDetails) =>
-            <EventCard beginCheckin={beginCheckin} isActive={false} key={eventDetails.name} {...eventDetails} />
+          {pastEvents.map((eventDetails, idx) =>
+            <EventCard beginCheckin={beginCheckin} isActive={false} key={`${eventDetails.name}-${idx}`} {...eventDetails} />
           )}
           </div>
         </div>

@@ -71,6 +71,10 @@ class LoginModal extends Component {
       verified: ['uportLiveEvent'],
       // notifications: true
     }).then((credentials) => {
+      // Hack the uriHandlers back to the defaults
+      uport.closeUriHandler = QRUtil.closeQr
+      uport.uriHandler = QRUtil.openQr
+      // Dispatch the login event and save the credentials
       doLogin(credentials)
     })
   }

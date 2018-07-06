@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import DatePicker from 'react-datepicker'
 import { connect } from 'react-redux'
-import { Credentials } from 'uport'
 import moment from 'moment'
 
 import { createEventIdentity } from './muport-id'
@@ -32,7 +31,7 @@ class EventCreator extends Component {
       errors: {
         name: null,
         location: null,
-        about: null
+        description: null
       },
       startDate: moment(),
       endDate: moment(),
@@ -61,24 +60,35 @@ class EventCreator extends Component {
     }
   }
 
+  /**
+   * Fire an ipfs upload when an image is uploaded to the browser
+   * when the hash comes back, update the iconUrl to the image's location
+   * on ipfs, so that it is diplayed
+   *
+   * TODO: Could show the image before then, but it may be misleading
+   * as we need to wait for the ipfs hash before we can give the credential
+   */
   handleFileUpload(event) {
     const file = event.target.files[0]
 
     // Validate the file as an image
-    if (!file.type.startsWith('image/')) {
+    if (!file || !file.type.startsWith('image/')) {
       alert('only images broh')
       return
     }
 
+    // Show spinner while waiting for ipfs response
     this.setState({iconUrl: loadingGif})
 
+    // Update the event icon when the hash comes back
     uploadToIpfs(file)
       .then((hash) => this.setState({iconUrl: `https://ipfs.io/ipfs/${hash}`}))
       .catch((err) => console.log(err))
   }
 
   /**
-   * Individually validate each field
+   * Individually validate each field, and display an error message
+   * beside the inputs for failing (empty) values
    */
   checkFields() {
     let isValid = true
@@ -87,7 +97,7 @@ class EventCreator extends Component {
     for (const field in errors) {
       // Add any more specific validation checks here
       if (!this.state[field]) {
-        errors[field] = `Please enter a value for ${field}`
+        errors[field] = `Please enter a ${field} for your event`
         isValid = false
       }
     }
@@ -103,41 +113,45 @@ class EventCreator extends Component {
    * @param {Event} event -- the form submission event, only captured to prevent default
    */
   handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
     const {authData, createEvent} = this.props
-    const {name, location, startDate, endDate, about, iconUrl} = this.state
+    const {name, location, startDate, endDate, description, iconUrl} = this.state
 
     // Return early if invalid
     if (!this.checkFields()) {
       return
     }
 
-    console.log()
-
-    // Create a did keypair for the event
-    // identifier = {did, privateKey}
-    const identifier = Credentials.createIdentity()
-
     // Individual fields are taken from http://schema.org/Event 
     // and described further in schemas.md
     const eventDetails = {
-      identifier,
       organizer: authData.address,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      image: iconUrl,
-      name, location, about
+      name, location, description
     }
 
-    // TODO: Confirm all fields have been filled out
-    uport.attestCredentials({
-      sub: authData.address,
-      claim: {
-        uportLiveEvent: eventDetails
-      }
-    }).then(() => {
-      createEvent(eventDetails)
-      browserHistory.push('/dashboard')
+    // Only save the image if it's been provided
+    if (iconUrl !== loadingGif && iconUrl !== uploadIcon) {
+      eventDetails.image = iconUrl
+    }
+
+    // Create an event identity by serializing the muport profile
+    createEventIdentity(eventDetails).then((muportId) => {
+      // Use the mnemonic as the identity
+      console.log(muportId.keyring.serialize())
+      eventDetails.identity = muportId.keyring.serialize()
+
+      // Issue the attestation
+      uport.attestCredentials({
+        sub: authData.address,
+        claim: {
+          uportLiveEvent: eventDetails
+        }
+      }).then(() => {
+        createEvent(eventDetails)
+        browserHistory.push('/dashboard')
+      })
     })
   }
 
@@ -147,7 +161,7 @@ class EventCreator extends Component {
    * with the scanning of a QR code
    */
   render() {
-    const {name, location, startDate, endDate, about, errors, iconUrl} = this.state
+    const {name, location, startDate, endDate, description, errors, iconUrl} = this.state
 
     // Set threshold to midnight
     const today = moment().startOf('day')
@@ -201,8 +215,8 @@ class EventCreator extends Component {
                   </div>
                   <div className="field">
                     <h4>About</h4>
-                    <textarea type="text" name="about" value={about} onChange={this.handleFieldChange} placeholder="Describe your event"></textarea>
-                    <span className="error">{errors.about}</span>
+                    <textarea type="text" name="description" value={description} onChange={this.handleFieldChange} placeholder="Describe your event"></textarea>
+                    <span className="error">{errors.description}</span>
                   </div>
                   <div className="field">
                     <h4>Event Dates</h4>
