@@ -1,0 +1,19 @@
+/**
+ * Spinner styles
+ */
+ 
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% {  transform: rotate(360deg); }
+}
+
+.spinner-wrapper {
+    text-align: center;
+    margin-top: 25vh;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    width: 200px;
+    height: auto;
+}

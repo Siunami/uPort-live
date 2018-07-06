@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { Credentials } from 'uport'
 import moment from 'moment'
 
+import { uport } from '../../user'
 import { createEvent } from './actions'
-import { uport } from '../../../util/connectors'
 
 import eventImage from '../../../img/eventcredential.jpg'
 
