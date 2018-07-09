@@ -20,9 +20,14 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
 
   // Extract event data for display
   const {name, location, description, startDate, endDate, image} = eventData
+  let {name, location, about, description, startDate, endDate, image} = eventData
 
+  // HAack to allow about or description
+  description = description || about
   const dateRange = formatDateRange(startDate, endDate)
-  const shortDesc = shortenDescription(description)
+
+  // Don't shorten empty description
+  const shortDesc = description && shortenDescription(description)
 
 	return (
     <div className="ui card">
@@ -52,7 +57,7 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
  * @param {String} desc -- description of event
  */
 function shortenDescription(desc, length=150) {
-  //trim the string to the maximum length
+  // trim the string to the maximum length
   let trimmedString = desc.substr(0, length);
 
   //re-trim if we are in the middle of a word
