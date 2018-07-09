@@ -19,7 +19,6 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
   }
 
   // Extract event data for display
-  const {name, location, description, startDate, endDate, image} = eventData
   let {name, location, about, description, startDate, endDate, image} = eventData
 
   // HAack to allow about or description
@@ -57,6 +56,10 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
  * @param {String} desc -- description of event
  */
 function shortenDescription(desc, length=150) {
+  if (desc.length <= length + 3) {
+    return desc
+  }
+
   // trim the string to the maximum length
   let trimmedString = desc.substr(0, length);
 

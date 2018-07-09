@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import DatePicker from 'react-datepicker'
 import { connect } from 'react-redux'
-import EthrDID from 'ethr-did'
+import { Credentials } from 'uport-connect'
 import moment from 'moment'
 
 // import { createEventIdentity } from './muport-id'
@@ -123,13 +123,12 @@ class EventCreator extends Component {
       return
     }
 
-    const identity = EthrDID.createIdentity()
-    new EthrDID({...identity, provider: web3})
+    const identifier = Credentials.createIdentity()
 
     // Individual fields are taken from http://schema.org/Event 
     // and described further in schemas.md
     const eventDetails = {
-      identity,
+      identifier,
       organizer: authData.address,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
