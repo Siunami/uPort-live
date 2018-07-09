@@ -31,14 +31,14 @@ class Dashboard extends Component {
           <em>Click an event card to check in attendees!</em><br></br><br></br>
           <div className="ui three stackable cards">
           {activeEvents.map((eventDetails) =>
-            <EventCard beginCheckin={beginCheckin} isActive={true} key={eventDetails.name} {...eventDetails} />
+            <EventCard beginCheckin={beginCheckin} isActive={true} key={JSON.stringify(eventDetails)} {...eventDetails} />
           )}
           </div>
 
           <h3> Past Events</h3>
           <div className="ui three stackable cards">
           {pastEvents.map((eventDetails) =>
-            <EventCard beginCheckin={beginCheckin} isActive={false} key={eventDetails.name} {...eventDetails} />
+            <EventCard beginCheckin={beginCheckin} isActive={false} key={JSON.stringify(eventDetails)} {...eventDetails} />
           )}
           </div>
         </div>

@@ -114,6 +114,9 @@ class EventCreator extends Component {
     }).then(() => {
       createEvent(eventDetails)
       browserHistory.push('/dashboard')
+    }).catch((err) => {
+      console.log(err)
+      alert('Credential issuing failed ?')
     })
   }
 

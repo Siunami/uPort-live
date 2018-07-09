@@ -71,6 +71,8 @@ class LoginModal extends Component {
       verified: ['uportLiveEvent'],
       // notifications: true
     }).then((credentials) => {
+      uport.uriHandler = QRUtil.openQr
+      uport.closeUriHandler = QRUtil.closeQr
       doLogin(credentials)
     })
   }
