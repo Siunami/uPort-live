@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import DatePicker from 'react-datepicker'
 import { connect } from 'react-redux'
+import EthrDID from 'ethr-did'
 import moment from 'moment'
 
-import { createEventIdentity } from './muport-id'
+// import { createEventIdentity } from './muport-id'
 import { uploadToIpfs } from '../../misc'
 import { createEvent } from './actions'
-import { uport } from '../../user'
+import { uport, web3 } from '../../user'
 
 import loadingGif from '../../../img/loading.gif'
 import uploadIcon from '../../../img/upload.png'
@@ -122,9 +123,13 @@ class EventCreator extends Component {
       return
     }
 
+    const identity = EthrDID.createIdentity()
+    new EthrDID({...identity, provider: web3})
+
     // Individual fields are taken from http://schema.org/Event 
     // and described further in schemas.md
     const eventDetails = {
+      identity,
       organizer: authData.address,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
@@ -136,22 +141,15 @@ class EventCreator extends Component {
       eventDetails.image = iconUrl
     }
 
-    // Create an event identity by serializing the muport profile
-    createEventIdentity(eventDetails).then((muportId) => {
-      // Use the mnemonic as the identity
-      console.log(muportId.keyring.serialize())
-      eventDetails.identity = muportId.keyring.serialize()
-
-      // Issue the attestation
-      uport.attestCredentials({
-        sub: authData.address,
-        claim: {
-          uportLiveEvent: eventDetails
-        }
-      }).then(() => {
-        createEvent(eventDetails)
-        browserHistory.push('/dashboard')
-      })
+    // Issue the attestation
+    uport.attestCredentials({
+      sub: authData.address,
+      claim: {
+        uportLiveEvent: eventDetails
+      }
+    }).then(() => {
+      createEvent(eventDetails)
+      browserHistory.push('/dashboard')
     })
   }
 
@@ -180,8 +178,6 @@ class EventCreator extends Component {
       if (endDate >= this.state.startDate)
         this.setState({endDate})
     }
-
-    console.log(`rendering: img=${iconUrl}`)
 
     return (
       <main className="container">
