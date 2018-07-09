@@ -51,6 +51,8 @@
   },
   "dependencies": {
     "ethr-did": "^0.0.5",
+    "firebase-admin": "^5.12.1",
+    "firebase-tools": "^3.19.3",
     "font-awesome": "^4.7.0",
     "gh-pages": "^1.2.0",
     "markdown-to-jsx": "^6.6.8",
