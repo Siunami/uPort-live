@@ -6,8 +6,6 @@ import moment from 'moment'
 import EventCard from './EventCard'
 import { beginCheckin } from '../checkin'
 
-import './EventDashboard.css'
-
 /**
  * @classdesc
  * This component will display all of a user's own events
@@ -30,15 +28,15 @@ class Dashboard extends Component {
           <h3> Active Events </h3>
           <em>Click an event card to check in attendees!</em><br></br><br></br>
           <div className="ui three stackable cards">
-          {activeEvents.map((eventDetails) =>
-            <EventCard beginCheckin={beginCheckin} isActive={true} key={JSON.stringify(eventDetails)} {...eventDetails} />
+          {activeEvents.map((eventDetails, idx) =>
+            <EventCard beginCheckin={beginCheckin} isActive={true} key={`${eventDetails.name}-${idx}`} {...eventDetails} />
           )}
           </div>
 
           <h3> Past Events</h3>
           <div className="ui three stackable cards">
-          {pastEvents.map((eventDetails) =>
-            <EventCard beginCheckin={beginCheckin} isActive={false} key={JSON.stringify(eventDetails)} {...eventDetails} />
+          {pastEvents.map((eventDetails, idx) =>
+            <EventCard beginCheckin={beginCheckin} isActive={false} key={`${eventDetails.name}-${idx}`} {...eventDetails} />
           )}
           </div>
         </div>

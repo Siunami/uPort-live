@@ -4,6 +4,12 @@ This is just a document for keeping track of random thoughts during the developm
 
 In particular, I'm creating this while on an 8 hour flight with no internet, so without github issues, this is the next best thing, and hey it might come in handy even when the internet comes back !
 
+## 7/3/18 Rob
+- Lots of style improvements are underway/completed, so the next item of business is making the whole app a little more **cool**.  Proposal: replace ethr-did's with muport did's, so that we can create a did-doc for each event and publish it's location/description etc. 
+	- Aside: what if you're issuing credentials to a private event? Would the location/details be a problem?  People wouldn't really find it unless they knew where to look but still is public... things to think about
+- In particular, using a muport-did will let us attach an image which will be displayed along with any credentials issued by the app, nifty
+- TODO: Set up an alternative event creation flow that uses muport-core and ipfs-api to create a muport id with did-doc, upload an image to ipfs, and link to that image in the did-doc
+
 ## 6/29/18 Rob
 - Reorganized components into a slightly more sane structure, hopefully this will save headaches down the road/will be more easy to understand.
 - TODO: Better handling for redirects and landing page stuff

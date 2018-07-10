@@ -151,7 +151,7 @@ nav {
   box-shadow: 0 2px 2px 0 rgba(63,61,75,.4);
   font-size: 1.25rem;
   font-family: 'Nunito Sans', sans-serif;
-  z-index: 1;
+  z-index: 50;
 }
 
 /* WIP/Idea: Add fingerprint swirls to navbar?? */
