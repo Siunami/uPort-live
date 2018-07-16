@@ -91,8 +91,6 @@ export class EventCheckinAttestor extends Component {
       }
 
       // Push the attendance credential
-      console.log('issuing claim')
-      console.log(claim)
       uport.attestCredentials({
         sub: address, claim
       })
