@@ -1,3 +1,4 @@
-import Spinner from './spinner/Spinner'
 import { uploadToIpfs } from './util/ipfs'
-export { Spinner, uploadToIpfs }
+import { Modal, MODALS, showSpinner, showModal, cancelModal, reducer as modalReducer } from './modal'
+
+export { Modal, MODALS, showSpinner, showModal, cancelModal, modalReducer, uploadToIpfs }
