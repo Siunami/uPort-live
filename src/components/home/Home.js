@@ -14,9 +14,6 @@ class Home extends Component {
   render() {
     return (
       <main className="container">
-      {(this.state && this.state.spinner) ? (
-        <Spinner />
-      ) : (
         <div id="bodyContent" className="ui three column stackable centered grid">
           <div className="row">
             <div className="column center aligned">
@@ -45,19 +42,19 @@ class Home extends Component {
               <div className="imgbox">
                 <img className="feature" src={eventIcon} />
               </div>
-              <h3>Create an event</h3>
+              <h3>Create an Event</h3>
             </div>
             <div className="column center aligned">
               <div className="imgbox">
                 <img className="feature" src={qrIcon} />
               </div>
-              <h3>Generate QR code</h3>
+              <h3>Check-in Attendees</h3>
             </div>
             <div className="column center aligned">
               <div className="imgbox">
                 <img className="feature" src={credentialIcon} />
               </div>
-              <h3>Attendees collect proof of attendance</h3>
+              <h3>Verify Proof-of-Attendance</h3>
             </div>
           </div>
         </div>
