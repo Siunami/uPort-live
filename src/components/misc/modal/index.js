@@ -5,7 +5,7 @@ import { showSpinner, showModal, cancelModal } from './actions'
 // Define available modal ids
 const MODALS = {
   Login: 'LOGIN',
-  Checkin: 'CHECKIN',
+  QR: 'QR',
   Verify: 'VERIFY'
 }
 

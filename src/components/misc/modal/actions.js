@@ -6,13 +6,14 @@ export const SHOW_SPINNER = 'UI/SHOW_SPINNER'
 export const SHOW_MODAL = 'UI/SHOW_MODAL'
 export const CANCEL_MODAL = 'UI/CANCEL_MODAL'
 
-export const showSpinner = () => ({
-	type: SHOW_SPINNER
+export const showSpinner = (message) => ({
+	type: SHOW_SPINNER,
+  payload: message
 })
 
-export const showModal = (modalId) => ({
+export const showModal = (modalId, props) => ({
 	type: SHOW_MODAL,
-	payload: modalId
+	payload: {modalId, props}
 })
 
 export const cancelModal = () => ({

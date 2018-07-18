@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Modal, MODALS } from '../misc'
+import { Modal, QRModal, MODALS } from '../misc'
 
 import { LoginModal } from '../user'
 // import { CheckinModal, VerifyModal } from '../events'
 
 const whichModal = {
-  [MODALS.Login]: <LoginModal />,
-  // [MODALS.Checkin]: <CheckinModal />,
+  [MODALS.Login]: LoginModal,
+  [MODALS.QR]: QRModal,
   // [MODALS.Verify]: <VerifyModal />
 }
 
@@ -16,20 +16,25 @@ const whichModal = {
  * A Wrapper around the application, determining if a modal
  * should be displayed and which one
  */
-const ModalWrapper = ({ modalId, spinner, children }) => (
-	<React.Fragment>
-    {(modalId || spinner) &&
-      <Modal spinner={spinner}> 
-        {spinner || whichModal[modalId]}
-      </Modal>
-    }
-    {children}
-	</React.Fragment>
-)
+const ModalWrapper = ({ modalId, modalProps, spinner, children }) => {
+  const ModalContents = whichModal[modalId]
+
+  return (
+  	<React.Fragment>
+      {(modalId || spinner) &&
+        <Modal spinner={spinner}> 
+          {spinner || <ModalContents {...modalProps} />}
+        </Modal>
+      }
+      {children}
+  	</React.Fragment>
+  )
+}
 
 const mapStateToProps = (state, props) => ({
   modalId: state.modal.modalId,
-  spinner: state.modal.spinner
+  spinner: state.modal.spinner,
+  modalProps: state.modal.props,
 })
 
 const mapDispatchToProps = () => ({})
