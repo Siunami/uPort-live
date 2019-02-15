@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
+import './EventCard.css'
+
 /**
  * @classdesc
  * A component for displaying a single event on the user's dashboard
@@ -17,14 +19,12 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
   }
 
   // Extract event data for display
-  let {name, location, about, description, startDate, endDate} = eventData
+  let {name, location, about, description, startDate, endDate, image} = eventData
 
   // HAack to allow about or description
   description = description || about
-
-  const dateIcon = moment(startDate).format('MM/D')
   const dateRange = formatDateRange(startDate, endDate)
-  
+
   // Don't shorten empty description
   const shortDesc = description && shortenDescription(description)
 
@@ -37,6 +37,9 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
         <hr/>
         <div className="description">
           <p>{shortDesc}</p>
+        </div>
+        <div className="image-box">
+        {image && <img className="card-image" src={image} alt="Event Icon" />}
         </div>
       </div>
       {isActive && (
@@ -53,6 +56,10 @@ const EventCard = ({beginCheckin, isActive, ...eventData}) => {
  * @param {String} desc -- description of event
  */
 function shortenDescription(desc, length=150) {
+  if (desc.length <= length + 3) {
+    return desc
+  }
+
   // trim the string to the maximum length
   let trimmedString = desc.substr(0, length);
 
